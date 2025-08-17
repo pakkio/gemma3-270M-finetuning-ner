@@ -1,0 +1,254 @@
+{
+  "spacy_baseline": [
+    {
+      "document": "Il Dott.ssa Maria Conti terrà una conferenza a Napoli il entro il 30 aprile 2025.",
+      "spacy_output": "{\"people\": [\"Maria Conti\"], \"places\": [\"Dott.ssa\", \"Napoli\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Dott.ssa Maria Conti\"], \"places\": [\"Napoli\"], \"dates\": [\"entro il 30 aprile 2025\"]}"
+    },
+    {
+      "document": "Il Andrea Verdi terrà una conferenza a Bologna il 28 novembre 2024.",
+      "spacy_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Bologna\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Bologna\"], \"dates\": [\"28 novembre 2024\"]}"
+    },
+    {
+      "document": "Ing. Paolo Ferrari ha visitato Politecnico di Milano durante 15 marzo 2024.",
+      "spacy_output": "{\"people\": [\"Ing\", \"Paolo Ferrari\"], \"places\": [\"Politecnico di Milano\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Ing. Paolo Ferrari\"], \"places\": [\"Politecnico di Milano\"], \"dates\": [\"15 marzo 2024\"]}"
+    },
+    {
+      "document": "Mario Rossi ha visitato Torino durante 12 gennaio 2025.",
+      "spacy_output": "{\"people\": [\"Mario Rossi\"], \"places\": [\"Torino\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Mario Rossi\"], \"places\": [\"Torino\"], \"dates\": [\"12 gennaio 2025\"]}"
+    },
+    {
+      "document": "Il concorso di cucina vedrà la partecipazione di Gino Strada presso l'Expo Milano il 20 maggio 2024.",
+      "spacy_output": "{\"people\": [\"Gino Strada\"], \"places\": [\"Expo Milano\"], \"dates\": []}",
+      "expected_output": "{\"people\":[\"Gino Strada\"],\"dates\":[\"20 maggio 2024\"],\"places\":[\"Expo Milano\"]}"
+    },
+    {
+      "document": "Prof. Luigi Romano ha visitato Milano durante entro il 30 aprile 2025.",
+      "spacy_output": "{\"people\": [\"Prof\", \"Luigi Romano\"], \"places\": [\"Milano\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Prof. Luigi Romano\"], \"places\": [\"Milano\"], \"dates\": [\"entro il 30 aprile 2025\"]}"
+    },
+    {
+      "document": "Il direttore Prof. Luigi Romano incontrerà la stampa presso Milano 28 novembre 2024.",
+      "spacy_output": "{\"people\": [\"Luigi Romano\"], \"places\": [\"Milano\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Prof. Luigi Romano\"], \"places\": [\"Milano\"], \"dates\": [\"28 novembre 2024\"]}"
+    },
+    {
+      "document": "La conferenza di Renzo Piano sull'architettura sostenibile avrà luogo presso il Palazzo delle Esposizioni di Roma.",
+      "spacy_output": "{\"people\": [\"Renzo Piano\"], \"places\": [\"Palazzo delle Esposizioni\"], \"dates\": []}",
+      "expected_output": "{\"people\":[\"Renzo Piano\"],\"dates\":[],\"places\":[\"Palazzo delle Esposizioni di Roma\"]}"
+    },
+    {
+      "document": "Il direttore Prof. Luigi Romano incontrerà la stampa presso Torino 15 marzo 2024.",
+      "spacy_output": "{\"people\": [\"Luigi Romano\"], \"places\": [\"Torino\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Prof. Luigi Romano\"], \"places\": [\"Torino\"], \"dates\": [\"15 marzo 2024\"]}"
+    },
+    {
+      "document": "La professoressa Andrea Verdi insegna all'università di Piazza San Marco dal 12 gennaio 2025.",
+      "spacy_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Piazza San Marco\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Piazza San Marco\"], \"dates\": [\"12 gennaio 2025\"]}"
+    },
+    {
+      "document": "Il direttore Andrea Verdi incontrerà la stampa presso Milano 28 novembre 2024.",
+      "spacy_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Milano\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Milano\"], \"dates\": [\"28 novembre 2024\"]}"
+    },
+    {
+      "document": "L'assessore Mario Rossi ha presentato il progetto a Palazzo Reale il 15 marzo 2024.",
+      "spacy_output": "{\"people\": [\"Mario Rossi\"], \"places\": [\"Palazzo Reale\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Mario Rossi\"], \"places\": [\"Palazzo Reale\"], \"dates\": [\"15 marzo 2024\"]}"
+    },
+    {
+      "document": "Alessandro Gassman presenterà il suo spettacolo teatrale presso il Teatro Eliseo di Roma.",
+      "spacy_output": "{\"people\": [\"Alessandro Gassman\"], \"places\": [\"Teatro Eliseo\", \"Roma\"], \"dates\": []}",
+      "expected_output": "{\"people\":[\"Alessandro Gassman\"],\"dates\":[],\"places\":[\"Teatro Eliseo di Roma\"]}"
+    },
+    {
+      "document": "Il Giulia Bianchi terrà una conferenza a Palazzo Reale il 28 novembre 2024.",
+      "spacy_output": "{\"people\": [\"Giulia Bianchi\"], \"places\": [\"Palazzo Reale\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Giulia Bianchi\"], \"places\": [\"Palazzo Reale\"], \"dates\": [\"28 novembre 2024\"]}"
+    },
+    {
+      "document": "La professoressa Mario Rossi insegna all'università di Politecnico di Milano dal 28 novembre 2024.",
+      "spacy_output": "{\"people\": [\"Mario Rossi\"], \"places\": [], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Mario Rossi\"], \"places\": [\"Politecnico di Milano\"], \"dates\": [\"28 novembre 2024\"]}"
+    },
+    {
+      "document": "Il Francesca Neri terrà una conferenza a Piazza San Marco il 5 giugno 2024.",
+      "spacy_output": "{\"people\": [\"Francesca Neri\"], \"places\": [\"Piazza San Marco\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Francesca Neri\"], \"places\": [\"Piazza San Marco\"], \"dates\": [\"5 giugno 2024\"]}"
+    },
+    {
+      "document": "Il direttore Ing. Paolo Ferrari incontrerà la stampa presso Politecnico di Milano 5 giugno 2024.",
+      "spacy_output": "{\"people\": [\"Ing\", \"Paolo Ferrari\"], \"places\": [\"Politecnico di Milano\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Ing. Paolo Ferrari\"], \"places\": [\"Politecnico di Milano\"], \"dates\": [\"5 giugno 2024\"]}"
+    },
+    {
+      "document": "L'assessore Dott.ssa Maria Conti ha presentato il progetto a Teatro alla Scala il 15 marzo 2024.",
+      "spacy_output": "{\"people\": [\"Dott.ssa Maria Conti\"], \"places\": [\"Teatro alla Scala\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Dott.ssa Maria Conti\"], \"places\": [\"Teatro alla Scala\"], \"dates\": [\"15 marzo 2024\"]}"
+    },
+    {
+      "document": "L'assessore Andrea Verdi ha presentato il progetto a Milano il dal 10 al 15 settembre 2024.",
+      "spacy_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Milano\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Milano\"], \"dates\": [\"dal 10 al 15 settembre 2024\"]}"
+    },
+    {
+      "document": "Il Giulia Bianchi terrà una conferenza a Politecnico di Milano il entro il 30 aprile 2025.",
+      "spacy_output": "{\"people\": [\"Giulia Bianchi\"], \"places\": [\"Politecnico di Milano\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Giulia Bianchi\"], \"places\": [\"Politecnico di Milano\"], \"dates\": [\"entro il 30 aprile 2025\"]}"
+    },
+    {
+      "document": "L'assessore Ing. Paolo Ferrari ha presentato il progetto a Teatro alla Scala il 5 giugno 2024.",
+      "spacy_output": "{\"people\": [\"Paolo Ferrari\"], \"places\": [\"Teatro alla Scala\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Ing. Paolo Ferrari\"], \"places\": [\"Teatro alla Scala\"], \"dates\": [\"5 giugno 2024\"]}"
+    },
+    {
+      "document": "La professoressa Francesca Neri insegna all'università di Roma dal entro il 30 aprile 2025.",
+      "spacy_output": "{\"people\": [\"Francesca Neri\"], \"places\": [], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Francesca Neri\"], \"places\": [\"Roma\"], \"dates\": [\"entro il 30 aprile 2025\"]}"
+    },
+    {
+      "document": "Giulia Bianchi ha visitato Roma durante entro il 30 aprile 2025.",
+      "spacy_output": "{\"people\": [\"Giulia Bianchi\"], \"places\": [\"Roma\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Giulia Bianchi\"], \"places\": [\"Roma\"], \"dates\": [\"entro il 30 aprile 2025\"]}"
+    },
+    {
+      "document": "Il Ing. Paolo Ferrari terrà una conferenza a Teatro alla Scala il 15 marzo 2024.",
+      "spacy_output": "{\"people\": [\"Ing\", \"Paolo Ferrari\"], \"places\": [\"Teatro alla Scala\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Ing. Paolo Ferrari\"], \"places\": [\"Teatro alla Scala\"], \"dates\": [\"15 marzo 2024\"]}"
+    },
+    {
+      "document": "Il direttore Giulia Bianchi incontrerà la stampa presso Torino 28 novembre 2024.",
+      "spacy_output": "{\"people\": [\"Giulia Bianchi\"], \"places\": [\"Torino\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Giulia Bianchi\"], \"places\": [\"Torino\"], \"dates\": [\"28 novembre 2024\"]}"
+    },
+    {
+      "document": "Il direttore Mario Rossi incontrerà la stampa presso Napoli 15 marzo 2024.",
+      "spacy_output": "{\"people\": [\"Mario Rossi\"], \"places\": [\"Napoli\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Mario Rossi\"], \"places\": [\"Napoli\"], \"dates\": [\"15 marzo 2024\"]}"
+    },
+    {
+      "document": "La professoressa Dott.ssa Maria Conti insegna all'università di Firenze dal 12 gennaio 2025.",
+      "spacy_output": "{\"people\": [\"Dott.ssa Maria Conti\"], \"places\": [\"Firenze\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Dott.ssa Maria Conti\"], \"places\": [\"Firenze\"], \"dates\": [\"12 gennaio 2025\"]}"
+    },
+    {
+      "document": "Il festival del cinema si svolgerà presso il Teatro Romano di Verona il 22 settembre 2024.",
+      "spacy_output": "{\"people\": [], \"places\": [\"Teatro Romano\", \"Verona\"], \"dates\": []}",
+      "expected_output": "{\"people\":[],\"dates\":[\"22 settembre 2024\"],\"places\":[\"Teatro Romano di Verona\"]}"
+    },
+    {
+      "document": "La professoressa Giulia Bianchi insegna all'università di Teatro alla Scala dal 5 giugno 2024.",
+      "spacy_output": "{\"people\": [\"Giulia Bianchi\"], \"places\": [], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Giulia Bianchi\"], \"places\": [\"Teatro alla Scala\"], \"dates\": [\"5 giugno 2024\"]}"
+    },
+    {
+      "document": "Il Ing. Paolo Ferrari terrà una conferenza a Politecnico di Milano il dal 10 al 15 settembre 2024.",
+      "spacy_output": "{\"people\": [\"Ing\", \"Paolo Ferrari\"], \"places\": [\"Politecnico di Milano\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Ing. Paolo Ferrari\"], \"places\": [\"Politecnico di Milano\"], \"dates\": [\"dal 10 al 15 settembre 2024\"]}"
+    },
+    {
+      "document": "Marco Mengoni si esibirà presso il Forum di Assago a Milano il 2 dicembre 2024.",
+      "spacy_output": "{\"people\": [\"Marco Mengoni\"], \"places\": [\"Forum di Assago\", \"Milano\"], \"dates\": []}",
+      "expected_output": "{\"people\":[\"Marco Mengoni\"],\"dates\":[\"2 dicembre 2024\"],\"places\":[\"Forum di Assago a Milano\"]}"
+    },
+    {
+      "document": "La professoressa Dott.ssa Maria Conti insegna all'università di Piazza San Marco dal 5 giugno 2024.",
+      "spacy_output": "{\"people\": [\"Dott.ssa Maria Conti\"], \"places\": [\"Piazza San Marco\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Dott.ssa Maria Conti\"], \"places\": [\"Piazza San Marco\"], \"dates\": [\"5 giugno 2024\"]}"
+    },
+    {
+      "document": "Il Dott.ssa Maria Conti terrà una conferenza a Università Bocconi il entro il 30 aprile 2025.",
+      "spacy_output": "{\"people\": [\"Maria Conti\"], \"places\": [\"Dott.ssa\", \"Università Bocconi\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Dott.ssa Maria Conti\"], \"places\": [\"Università Bocconi\"], \"dates\": [\"entro il 30 aprile 2025\"]}"
+    },
+    {
+      "document": "Il direttore Mario Rossi incontrerà la stampa presso Firenze 28 novembre 2024.",
+      "spacy_output": "{\"people\": [\"Mario Rossi\"], \"places\": [\"Firenze\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Mario Rossi\"], \"places\": [\"Firenze\"], \"dates\": [\"28 novembre 2024\"]}"
+    },
+    {
+      "document": "Andrea Verdi ha visitato Roma durante 15 marzo 2024.",
+      "spacy_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Roma\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Roma\"], \"dates\": [\"15 marzo 2024\"]}"
+    },
+    {
+      "document": "Il Dott.ssa Maria Conti terrà una conferenza a Palazzo Chigi il 5 giugno 2024.",
+      "spacy_output": "{\"people\": [\"Maria Conti\"], \"places\": [\"Dott.ssa\", \"Palazzo Chigi\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Dott.ssa Maria Conti\"], \"places\": [\"Palazzo Chigi\"], \"dates\": [\"5 giugno 2024\"]}"
+    },
+    {
+      "document": "Il Dott.ssa Maria Conti terrà una conferenza a Università Bocconi il 5 giugno 2024.",
+      "spacy_output": "{\"people\": [\"Maria Conti\"], \"places\": [\"Dott.ssa\", \"Università Bocconi\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Dott.ssa Maria Conti\"], \"places\": [\"Università Bocconi\"], \"dates\": [\"5 giugno 2024\"]}"
+    },
+    {
+      "document": "L'assessore Ing. Paolo Ferrari ha presentato il progetto a Palazzo Reale il 5 giugno 2024.",
+      "spacy_output": "{\"people\": [\"Paolo Ferrari\"], \"places\": [\"Palazzo Reale\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Ing. Paolo Ferrari\"], \"places\": [\"Palazzo Reale\"], \"dates\": [\"5 giugno 2024\"]}"
+    },
+    {
+      "document": "L'assessore Giulia Bianchi ha presentato il progetto a Milano il 28 novembre 2024.",
+      "spacy_output": "{\"people\": [\"Giulia Bianchi\"], \"places\": [\"Milano\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Giulia Bianchi\"], \"places\": [\"Milano\"], \"dates\": [\"28 novembre 2024\"]}"
+    },
+    {
+      "document": "Il direttore Andrea Verdi incontrerà la stampa presso Torino 28 novembre 2024.",
+      "spacy_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Torino\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Torino\"], \"dates\": [\"28 novembre 2024\"]}"
+    },
+    {
+      "document": "Lavoro a Milano, ma spesso vado a Milano Marittima.",
+      "spacy_output": "{\"people\": [], \"places\": [\"Lavoro\", \"Milano\", \"Milano Marittima\"], \"dates\": []}",
+      "expected_output": "{\"people\":[],\"dates\":[],\"places\":[\"Milano\",\"Milano Marittima\"]}"
+    },
+    {
+      "document": "Il direttore Ing. Paolo Ferrari incontrerà la stampa presso Napoli 28 novembre 2024.",
+      "spacy_output": "{\"people\": [\"Ing\", \"Paolo Ferrari\"], \"places\": [\"Napoli\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Ing. Paolo Ferrari\"], \"places\": [\"Napoli\"], \"dates\": [\"28 novembre 2024\"]}"
+    },
+    {
+      "document": "L'assessore Andrea Verdi ha presentato il progetto a Piazza San Marco il 12 gennaio 2025.",
+      "spacy_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Piazza San Marco\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Piazza San Marco\"], \"dates\": [\"12 gennaio 2025\"]}"
+    },
+    {
+      "document": "Il direttore Andrea Verdi incontrerà la stampa presso Palazzo Chigi 12 gennaio 2025.",
+      "spacy_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Palazzo Chigi\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Palazzo Chigi\"], \"dates\": [\"12 gennaio 2025\"]}"
+    },
+    {
+      "document": "Il Giulia Bianchi terrà una conferenza a Roma il entro il 30 aprile 2025.",
+      "spacy_output": "{\"people\": [\"Giulia Bianchi\"], \"places\": [\"Roma\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Giulia Bianchi\"], \"places\": [\"Roma\"], \"dates\": [\"entro il 30 aprile 2025\"]}"
+    },
+    {
+      "document": "La professoressa Dott.ssa Maria Conti insegna all'università di Torino dal 28 novembre 2024.",
+      "spacy_output": "{\"people\": [\"Dott.ssa Maria Conti\"], \"places\": [\"università di Torino\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Dott.ssa Maria Conti\"], \"places\": [\"Torino\"], \"dates\": [\"28 novembre 2024\"]}"
+    },
+    {
+      "document": "Il Giulia Bianchi terrà una conferenza a Palazzo Reale il 28 novembre 2024.",
+      "spacy_output": "{\"people\": [\"Giulia Bianchi\"], \"places\": [\"Palazzo Reale\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Giulia Bianchi\"], \"places\": [\"Palazzo Reale\"], \"dates\": [\"28 novembre 2024\"]}"
+    },
+    {
+      "document": "Il direttore Andrea Verdi incontrerà la stampa presso Milano 15 marzo 2024.",
+      "spacy_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Milano\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Andrea Verdi\"], \"places\": [\"Milano\"], \"dates\": [\"15 marzo 2024\"]}"
+    },
+    {
+      "document": "Il direttore Francesca Neri incontrerà la stampa presso Palazzo Chigi dal 10 al 15 settembre 2024.",
+      "spacy_output": "{\"people\": [\"Francesca Neri\"], \"places\": [\"Palazzo Chigi\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Francesca Neri\"], \"places\": [\"Palazzo Chigi\"], \"dates\": [\"dal 10 al 15 settembre 2024\"]}"
+    },
+    {
+      "document": "Mario Rossi ha visitato Roma durante 15 marzo 2024.",
+      "spacy_output": "{\"people\": [\"Mario Rossi\"], \"places\": [\"Roma\"], \"dates\": []}",
+      "expected_output": "{\"people\": [\"Mario Rossi\"], \"places\": [\"Roma\"], \"dates\": [\"15 marzo 2024\"]}"
+    }
+  ]
+}

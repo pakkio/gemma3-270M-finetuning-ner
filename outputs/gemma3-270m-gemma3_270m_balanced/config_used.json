@@ -1,0 +1,12 @@
+{
+  "model_id": "google/gemma-3-270m",
+  "lr": 0.0003,
+  "epochs": 5,
+  "batch_size": 8,
+  "grad_accum": 2,
+  "lora_r": 8,
+  "lora_alpha": 16,
+  "lora_dropout": 0.05,
+  "max_seq_len": 1024,
+  "description": "Configurazione bilanciata - default consigliata (5-15 min)"
+}

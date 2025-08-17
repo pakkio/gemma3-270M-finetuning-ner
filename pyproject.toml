@@ -1,0 +1,73 @@
+[tool.poetry]
+name = "gemma3-270m-entity-extraction"
+version = "0.1.0"
+description = "Fine-tuning Gemma 3 270M per estrazione di entità (persone, date, luoghi) da testi italiani"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+packages = [{include = "scripts"}]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+torch = ">=2.0.0"
+transformers = ">=4.36.0"
+datasets = ">=2.14.0"
+peft = ">=0.7.0"
+trl = ">=0.7.0"
+accelerate = ">=0.24.0"
+bitsandbytes = ">=0.41.0"
+scikit-learn = ">=1.3.0"
+numpy = ">=1.24.0"
+pandas = ">=2.0.0"
+tqdm = ">=4.65.0"
+rapidfuzz = "^3.13.0"
+tiktoken = "^0.11.0"
+protobuf = "^6.32.0"
+spacy = "^3.8.7"
+matplotlib = "^3.10.5"
+seaborn = "^0.13.2"
+scipy = "<1.14"
+
+[tool.poetry.group.dev.dependencies]
+jupyter = "^1.0.0"
+notebook = "^7.0.0"
+ipython = "^8.0.0"
+black = "^23.0.0"
+flake8 = "^6.0.0"
+pytest = "^7.0.0"
+
+[tool.poetry.scripts]
+finetune = "scripts.finetune_gemma3:main"
+inference = "scripts.inference:main"
+evaluate = "scripts.evaluate:main"
+run-config = "scripts.run_config:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+# [tool.poetry.group.gpu.dependencies]
+# # Dipendenze specifiche per GPU - commentate per ora
+# torch = {version = ">=2.0.0", source = "pytorch"}
+
+# [[tool.poetry.source]]
+# name = "pytorch" 
+# url = "https://download.pytorch.org/whl/cu118"
+# priority = "supplemental"

@@ -1,0 +1,17 @@
+{
+  "model_id": "google/gemma-3-270m",
+  "train_path": "data/train.jsonl",
+  "val_path": "data/val.jsonl",
+  "output_dir": "outputs/gemma3-entity-extraction-expanded",
+  "lr": 0.0001,
+  "epochs": 10,
+  "batch_size": 4,
+  "grad_accum": 4,
+  "max_seq_len": 1024,
+  "fp16": false,
+  "bf16": true,
+  "lora_r": 32,
+  "lora_alpha": 64,
+  "lora_dropout": 0.1,
+  "seed": 42
+}

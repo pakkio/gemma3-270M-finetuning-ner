@@ -1,0 +1,17 @@
+{
+  "model_id": "google/gemma-3-270m",
+  "train_path": "data/train.jsonl",
+  "val_path": "data/val.jsonl",
+  "output_dir": "outputs/gemma3-270m-gemma3_270m_balanced",
+  "lr": 0.0003,
+  "epochs": 5,
+  "batch_size": 8,
+  "grad_accum": 2,
+  "max_seq_len": 1024,
+  "fp16": false,
+  "bf16": true,
+  "lora_r": 8,
+  "lora_alpha": 16,
+  "lora_dropout": 0.05,
+  "seed": 42
+}
