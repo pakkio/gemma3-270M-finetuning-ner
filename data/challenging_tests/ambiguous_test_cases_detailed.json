@@ -1,0 +1,196 @@
+[
+  {
+    "document": "Romano Prodi ha incontrato il sindaco nella capitale dell'impero romano.",
+    "expected": {
+      "people": [
+        "Romano Prodi"
+      ],
+      "places": [],
+      "dates": []
+    },
+    "challenge": "Romano = nome vs aggettivo"
+  },
+  {
+    "document": "Il sindaco Marino ha visitato la città di Marino nel Lazio.",
+    "expected": {
+      "people": [
+        "Marino"
+      ],
+      "places": [
+        "Marino",
+        "Lazio"
+      ],
+      "dates": []
+    },
+    "challenge": "Marino = persona vs luogo"
+  },
+  {
+    "document": "La famiglia Sicilia ha origini nella regione Sicilia.",
+    "expected": {
+      "people": [
+        "Sicilia"
+      ],
+      "places": [
+        "Sicilia"
+      ],
+      "dates": []
+    },
+    "challenge": "Sicilia = cognome vs regione"
+  },
+  {
+    "document": "San Francesco d'Assisi è nato ad Assisi nel 1181.",
+    "expected": {
+      "people": [
+        "San Francesco d'Assisi"
+      ],
+      "places": [
+        "Assisi"
+      ],
+      "dates": [
+        "1181"
+      ]
+    },
+    "challenge": "San Francesco = santo storico"
+  },
+  {
+    "document": "Andrea è andato a casa di Andrea Bocelli ieri sera.",
+    "expected": {
+      "people": [
+        "Andrea",
+        "Andrea Bocelli"
+      ],
+      "places": [],
+      "dates": [
+        "ieri sera"
+      ]
+    },
+    "challenge": "Nomi duplicati in contesti diversi"
+  },
+  {
+    "document": "Il Prof. De Sanctis dell'Università degli Studi di Milano-Bicocca ha parlato.",
+    "expected": {
+      "people": [
+        "De Sanctis"
+      ],
+      "places": [
+        "Università degli Studi di Milano-Bicocca"
+      ],
+      "dates": []
+    },
+    "challenge": "Entity compound e titoli"
+  },
+  {
+    "document": "Marco, Maria e Giuseppe si sono incontrati a Piazza San Marco.",
+    "expected": {
+      "people": [
+        "Marco",
+        "Maria",
+        "Giuseppe"
+      ],
+      "places": [
+        "Piazza San Marco"
+      ],
+      "dates": []
+    },
+    "challenge": "Multiple entities, Marco = nome vs piazza"
+  },
+  {
+    "document": "Il dott. Rossi ha lavorato dal 2020 al 2023 presso l'ospedale.",
+    "expected": {
+      "people": [
+        "Rossi"
+      ],
+      "places": [],
+      "dates": [
+        "dal 2020 al 2023"
+      ]
+    },
+    "challenge": "Titoli e periodi temporali"
+  },
+  {
+    "document": "Via Roma, 15 - qui abita la signora Roma Paolini.",
+    "expected": {
+      "people": [
+        "Roma Paolini"
+      ],
+      "places": [
+        "Via Roma"
+      ],
+      "dates": []
+    },
+    "challenge": "Via vs nome persona"
+  },
+  {
+    "document": "Durante l'era di Augusto, l'impero romano raggiunse la massima espansione.",
+    "expected": {
+      "people": [
+        "Augusto"
+      ],
+      "places": [],
+      "dates": []
+    },
+    "challenge": "Personaggi storici vs aggettivi"
+  },
+  {
+    "document": "Jean-Luc van der Berg ha visitato Saint-Pierre-et-Miquelon.",
+    "expected": {
+      "people": [
+        "Jean-Luc van der Berg"
+      ],
+      "places": [
+        "Saint-Pierre-et-Miquelon"
+      ],
+      "dates": []
+    },
+    "challenge": "Nomi composti con trattini e preposizioni"
+  },
+  {
+    "document": "Maria Rossi-Bianchi e Anna De Santis si sono laureate.",
+    "expected": {
+      "people": [
+        "Maria Rossi-Bianchi",
+        "Anna De Santis"
+      ],
+      "places": [],
+      "dates": []
+    },
+    "challenge": "Cognomi doppi e particelle nobiliari"
+  },
+  {
+    "document": "L'Ing. Carlo Da Vinci Jr. ha progettato il ponte.",
+    "expected": {
+      "people": [
+        "Carlo Da Vinci Jr."
+      ],
+      "places": [],
+      "dates": []
+    },
+    "challenge": "Titoli, particelle, suffissi"
+  },
+  {
+    "document": "Ieri Luca ha detto a Giova di incontrare Ale al bar.",
+    "expected": {
+      "people": [
+        "Luca",
+        "Giova",
+        "Ale"
+      ],
+      "places": [],
+      "dates": [
+        "ieri"
+      ]
+    },
+    "challenge": "Nomi abbreviati colloquiali"
+  },
+  {
+    "document": "Il boss della 'ndrangheta è stato arrestato a Reggio Calabria.",
+    "expected": {
+      "people": [],
+      "places": [
+        "Reggio Calabria"
+      ],
+      "dates": []
+    },
+    "challenge": "Slang e riferimenti indiretti"
+  }
+]

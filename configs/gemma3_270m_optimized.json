@@ -1,0 +1,61 @@
+{
+  "model_configs": {
+    "gemma3_270m_fast": {
+      "model_id": "google/gemma-3-270m",
+      "lr": 5e-4,
+      "epochs": 3,
+      "batch_size": 16,
+      "grad_accum": 1,
+      "lora_r": 4,
+      "lora_alpha": 8,
+      "lora_dropout": 0.05,
+      "max_seq_len": 512,
+      "description": "Configurazione veloce per test rapidi (2-5 min)"
+    },
+    "gemma3_270m_balanced": {
+      "model_id": "google/gemma-3-270m", 
+      "lr": 3e-4,
+      "epochs": 5,
+      "batch_size": 8,
+      "grad_accum": 2,
+      "lora_r": 8,
+      "lora_alpha": 16,
+      "lora_dropout": 0.05,
+      "max_seq_len": 1024,
+      "description": "Configurazione bilanciata - default consigliata (5-15 min)"
+    },
+    "gemma3_270m_quality": {
+      "model_id": "google/gemma-3-270m",
+      "lr": 1e-4,
+      "epochs": 10,
+      "batch_size": 4,
+      "grad_accum": 4,
+      "lora_r": 32,
+      "lora_alpha": 64,
+      "lora_dropout": 0.1,
+      "max_seq_len": 1024,
+      "description": "Configurazione per massima qualità con dataset espanso (25-35 min)"
+    }
+  },
+  "hardware_requirements": {
+    "gemma3_270m": {
+      "min_vram_gb": 1,
+      "recommended_vram_gb": 2,
+      "min_ram_gb": 4,
+      "recommended_ram_gb": 8,
+      "storage_gb": 1,
+      "colab_support": "FREE T4 GPU works"
+    }
+  },
+  "training_tips": {
+    "gemma3_270m": [
+      "TRAINING ULTRA-VELOCE: 2-30 minuti su GPU normale",
+      "LoRA rank BASSI: r=4-8 sufficienti (vs r=16-32 per modelli grandi)", 
+      "Learning rate ALTI: 3e-4 - 5e-4 senza instabilità",
+      "Convergenza RAPIDA: 3-5 epoche sufficienti",
+      "Batch size GRANDI: 8-16 possibili con poca VRAM",
+      "COLAB GRATIS: Funziona su Tesla T4 gratuita",
+      "QUANTIZZAZIONE: INT4 usa solo 200MB di memoria"
+    ]
+  }
+}

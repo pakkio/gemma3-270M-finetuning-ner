@@ -1,0 +1,15 @@
+{"document": "Romano Prodi ha incontrato il sindaco nella capitale dell'impero romano.", "output": "{\"people\": [\"Romano Prodi\"], \"places\": [], \"dates\": []}"}
+{"document": "Il sindaco Marino ha visitato la città di Marino nel Lazio.", "output": "{\"people\": [\"Marino\"], \"places\": [\"Marino\", \"Lazio\"], \"dates\": []}"}
+{"document": "La famiglia Sicilia ha origini nella regione Sicilia.", "output": "{\"people\": [\"Sicilia\"], \"places\": [\"Sicilia\"], \"dates\": []}"}
+{"document": "San Francesco d'Assisi è nato ad Assisi nel 1181.", "output": "{\"people\": [\"San Francesco d'Assisi\"], \"places\": [\"Assisi\"], \"dates\": [\"1181\"]}"}
+{"document": "Andrea è andato a casa di Andrea Bocelli ieri sera.", "output": "{\"people\": [\"Andrea\", \"Andrea Bocelli\"], \"places\": [], \"dates\": [\"ieri sera\"]}"}
+{"document": "Il Prof. De Sanctis dell'Università degli Studi di Milano-Bicocca ha parlato.", "output": "{\"people\": [\"De Sanctis\"], \"places\": [\"Università degli Studi di Milano-Bicocca\"], \"dates\": []}"}
+{"document": "Marco, Maria e Giuseppe si sono incontrati a Piazza San Marco.", "output": "{\"people\": [\"Marco\", \"Maria\", \"Giuseppe\"], \"places\": [\"Piazza San Marco\"], \"dates\": []}"}
+{"document": "Il dott. Rossi ha lavorato dal 2020 al 2023 presso l'ospedale.", "output": "{\"people\": [\"Rossi\"], \"places\": [], \"dates\": [\"dal 2020 al 2023\"]}"}
+{"document": "Via Roma, 15 - qui abita la signora Roma Paolini.", "output": "{\"people\": [\"Roma Paolini\"], \"places\": [\"Via Roma\"], \"dates\": []}"}
+{"document": "Durante l'era di Augusto, l'impero romano raggiunse la massima espansione.", "output": "{\"people\": [\"Augusto\"], \"places\": [], \"dates\": []}"}
+{"document": "Jean-Luc van der Berg ha visitato Saint-Pierre-et-Miquelon.", "output": "{\"people\": [\"Jean-Luc van der Berg\"], \"places\": [\"Saint-Pierre-et-Miquelon\"], \"dates\": []}"}
+{"document": "Maria Rossi-Bianchi e Anna De Santis si sono laureate.", "output": "{\"people\": [\"Maria Rossi-Bianchi\", \"Anna De Santis\"], \"places\": [], \"dates\": []}"}
+{"document": "L'Ing. Carlo Da Vinci Jr. ha progettato il ponte.", "output": "{\"people\": [\"Carlo Da Vinci Jr.\"], \"places\": [], \"dates\": []}"}
+{"document": "Ieri Luca ha detto a Giova di incontrare Ale al bar.", "output": "{\"people\": [\"Luca\", \"Giova\", \"Ale\"], \"places\": [], \"dates\": [\"ieri\"]}"}
+{"document": "Il boss della 'ndrangheta è stato arrestato a Reggio Calabria.", "output": "{\"people\": [], \"places\": [\"Reggio Calabria\"], \"dates\": []}"}
