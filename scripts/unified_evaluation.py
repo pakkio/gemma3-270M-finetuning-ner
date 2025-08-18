@@ -19,6 +19,38 @@ class UnifiedEvaluation:
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.results = {}
     
+    def check_spacy_italian(self):
+        """Check if spaCy Italian model is installed, install if missing."""
+        try:
+            import spacy
+            try:
+                spacy.load("it_core_news_sm")
+                print("✅ spaCy Italian model already installed")
+                return True
+            except OSError:
+                print("📦 Installing spaCy Italian model...")
+                # Try with poetry first, then fallback to direct python
+                result = subprocess.run([
+                    "poetry", "run", "python", "-m", "spacy", "download", "it_core_news_sm"
+                ], capture_output=True, text=True)
+                
+                if result.returncode != 0:
+                    # Fallback to direct python call
+                    result = subprocess.run([
+                        sys.executable, "-m", "spacy", "download", "it_core_news_sm"
+                    ], capture_output=True, text=True)
+                
+                if result.returncode == 0:
+                    print("✅ spaCy Italian model installed successfully")
+                    return True
+                else:
+                    print("❌ Failed to install spaCy Italian model")
+                    print("Error:", result.stderr)
+                    return False
+        except ImportError:
+            print("❌ spaCy not installed. Please run: poetry add spacy")
+            return False
+    
     def run_training(self, train_file="data/train_comprehensive.jsonl", 
                     val_file="data/val_comprehensive.jsonl",
                     model_output="outputs/gemma3-comprehensive"):
@@ -70,6 +102,10 @@ class UnifiedEvaluation:
         """Run baseline comparison against spaCy and regex."""
         print("\n🏆 BASELINE COMPARISON")
         print("=" * 60)
+        
+        # Check and install spaCy Italian model if needed
+        if not self.check_spacy_italian():
+            print("⚠️  Continuing without spaCy model (will use fallback)")
         
         baseline_script = Path("scripts/baseline_comparison.py")
         if not baseline_script.exists():
