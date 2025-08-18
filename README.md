@@ -10,7 +10,7 @@ This project demonstrates a **methodologically sound approach** to fine-tuning G
 - **Overall F1 Score**: **97.6%** (People: 99.3%, Dates: 96.2%, Places: 97.2%)
 - **Valid JSON Rate**: 100% (reliable structured output)
 - **Statistical Robustness**: 345 validation examples ensuring stable metrics
-- **Baseline Superiority**: 2.1x better than spaCy Italian (97.6% vs 45.7%)
+- **Fair Comparison**: Head-to-head evaluation vs spaCy fine-tuned on same dataset
 
 ### ⚡ **Exceptional Resource Efficiency**
 - **Training Speed**: ~13 minutes for comprehensive training (690 examples, 8 epochs)
@@ -135,7 +135,7 @@ Output: {
 
 This project delivers a **high-performance, production-ready** Italian NER system with exceptional results:
 
-✅ **Superior Performance** (97.6% F1 vs 45.7% best baseline)  
+✅ **Competitive Performance** (97.6% F1, outperformed by spaCy fine-tuned at 98.4%)  
 ✅ **Resource-efficient** (13 minutes training, 4 minutes evaluation)  
 ✅ **Statistical rigor** (345 validation examples ensuring reliability)  
 ✅ **Production reliability** (100% JSON parsing success)  
