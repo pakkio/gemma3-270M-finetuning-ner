@@ -26,21 +26,22 @@ This project demonstrates a **methodologically sound approach** to fine-tuning G
 - **Auto-Setup**: Automatically installs required dependencies (spaCy models)
 - **Production Readiness**: Robust performance with 100% JSON parsing success
 
-## 📈 Performance Excellence
+## 📈 Performance Comparison: Fair Fight Results
 
-### Current Performance vs Baselines
+### Head-to-Head Performance on Same Dataset (345 validation examples)
 
-| Model | People F1 | Dates F1 | Places F1 | Overall F1 | Speed |
-|-------|-----------|----------|-----------|------------|-------|
-| **Our Gemma3 Model** | **99.3%** | **96.2%** | **97.2%** | **97.6%** | Production |
-| spaCy Italian | 97.0% | 0.0% | 40.0% | 45.7% | 4.8ms/doc |
-| Regex Patterns | 18.2% | 50.0% | 36.8% | 35.0% | 0.1ms/doc |
+| Model | People F1 | Dates F1 | Places F1 | **Overall F1** | **Speed** | **Training Time** |
+|-------|-----------|----------|-----------|-------------|-----------|-------------------|
+| **spaCy Fine-tuned** | **98.6%** | **98.6%** | **98.2%** | **98.4%** | **0.7s** | **4.4 min** |
+| **Gemma3 Fine-tuned** | **99.3%** | **96.2%** | **97.2%** | **97.6%** | **189.4s** | **13 min** |
+| spaCy Generic | 71.1% | 2.9% | 86.0% | 53.3% | 1.8s | N/A |
 
-### Key Achievements
-- **2.1x better** than best baseline (spaCy)
-- **Perfect JSON parsing** (100% success rate)
-- **Balanced performance** across all entity types
-- **Production-ready** reliability and speed
+### Key Insights from Fair Comparison
+- **spaCy Fine-tuned WINS**: 98.4% vs 97.6% F1 (+0.8 points)
+- **270x Faster Inference**: spaCy processes same data in 0.7s vs Gemma3's 189.4s
+- **3x Faster Training**: spaCy trains in 4.4 min vs Gemma3's 13 min
+- **4x Memory Efficient**: spaCy uses 632MB vs Gemma3's 2GB during training
+- **Architectural Trade-off**: Task-specific (spaCy) beats general-purpose (Gemma3) for pure NER
 
 ## 🎪 Model Capabilities Showcase
 
