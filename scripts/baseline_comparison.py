@@ -57,7 +57,13 @@ class BaselineComparison:
     def spacy_baseline(self, texts: List[str]) -> List[Dict]:
         """Baseline con spaCy italiano."""
         if not self.spacy_model:
-            return [{"people": [], "places": [], "dates": []} for _ in texts]
+            results = [{"people": [], "places": [], "dates": []} for _ in texts]
+            self.results["spacy"] = {
+                "predictions": results,
+                "inference_time": 0.0,
+                "avg_time_per_doc": 0.0
+            }
+            return results
         
         results = []
         start_time = time.time()

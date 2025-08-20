@@ -1,0 +1,24 @@
+{"text": "Non entro più nel mio account da ieri", "intent": "account_access"}
+{"text": "Sistema bloccato al login", "intent": "account_access"}
+{"text": "Devo cancellare un ordine fatto per errore", "intent": "order_cancellation"}
+{"text": "Annulla tutto quello che ho ordinato", "intent": "order_cancellation"}
+{"text": "Il mio pacco dov'è finito?", "intent": "order_tracking"}
+{"text": "Controllo stato spedizione urgente", "intent": "order_tracking"}
+{"text": "Questo prodotto è difettoso, rimborso", "intent": "return_refund"}
+{"text": "Reso immediato per articolo sbagliato", "intent": "return_refund"}
+{"text": "La mia carta viene rifiutata sempre", "intent": "payment_issues"}
+{"text": "Errore PayPal durante checkout", "intent": "payment_issues"}
+{"text": "Costo spedizione per Napoli?", "intent": "shipping_info"}
+{"text": "Consegna in giornata possibile?", "intent": "shipping_info"}
+{"text": "Questo articolo è ancora in magazzino?", "intent": "product_availability"}
+{"text": "Taglia M disponibile in nero?", "intent": "product_availability"}
+{"text": "Specifiche dettagliate prodotto", "intent": "product_info"}
+{"text": "Manuale d'uso dove lo trovo?", "intent": "product_info"}
+{"text": "Ci sono offerte per i nuovi clienti?", "intent": "promotions_discounts"}
+{"text": "Coupon sconto del 10% valido?", "intent": "promotions_discounts"}
+{"text": "Il sito web non carica le pagine", "intent": "technical_support"}
+{"text": "Problemi con l'app mobile", "intent": "technical_support"}
+{"text": "Voglio cambiare la mia email", "intent": "account_management"}
+{"text": "Elimina tutti i miei dati", "intent": "account_management"}
+{"text": "Buonasera, avrei una domanda", "intent": "general_inquiry"}
+{"text": "Informazioni sui vostri servizi", "intent": "general_inquiry"}

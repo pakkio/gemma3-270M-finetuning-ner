@@ -1,0 +1,20 @@
+{
+  "document": "Roma, 15 agosto 2025 — L'assessora alla cultura Maria De Santis ha presentato il nuovo programma museale insieme al direttore Luca Bianchi presso il Palazzo delle Esposizioni.",
+  "output": "{\"people\":[\"Maria De Santis\",\"Luca Bianchi\"],\"dates\":[\"15 agosto 2025\"],\"places\":[\"Roma\",\"Palazzo delle Esposizioni\"],\"categories\":[\"cultura\",\"arte\",\"eventi\"],\"hashtags\":[\"#cultura\",\"#roma\",\"#musei\",\"#arte\",\"#esposizioni\"]}"
+}
+{
+  "document": "Milano, 22 novembre 2024 — Il Sindaco Giuseppe Sala ha annunciato un nuovo piano di mobilità sostenibile per la città, con l'obiettivo di ridurre le emissioni del 30% entro il 2030.",
+  "output": "{\"people\":[\"Giuseppe Sala\"],\"dates\":[\"22 novembre 2024\",\"2030\"],\"places\":[\"Milano\"],\"categories\":[\"politica\",\"ambiente\",\"mobilità\",\"sostenibilità\"],\"hashtags\":[\"#milano\",\"#mobilità\",\"#sostenibilità\",\"#ambiente\",\"#sala\"]}"
+}
+{
+  "document": "Napoli, 8 marzo 2025 — La chef stellata Teresa Romano inaugura il suo nuovo ristorante nel centro storico della città, presentando una cucina che unisce tradizione napoletana e innovazione moderna.",
+  "output": "{\"people\":[\"Teresa Romano\"],\"dates\":[\"8 marzo 2025\"],\"places\":[\"Napoli\"],\"categories\":[\"gastronomia\",\"business\",\"tradizione\",\"innovazione\"],\"hashtags\":[\"#napoli\",\"#gastronomia\",\"#chef\",\"#tradizione\",\"#innovazione\"]}"
+}
+{
+  "document": "Torino, 18 settembre 2024 — La Juventus ha presentato ufficialmente il nuovo allenatore Marco Rossi durante una conferenza stampa allo Stadium, alla presenza del presidente Andrea Agnelli.",
+  "output": "{\"people\":[\"Marco Rossi\",\"Andrea Agnelli\"],\"dates\":[\"18 settembre 2024\"],\"places\":[\"Torino\",\"Stadium\"],\"categories\":[\"sport\",\"calcio\",\"news\"],\"hashtags\":[\"#juventus\",\"#calcio\",\"#torino\",\"#sport\",\"#agnelli\"]}"
+}
+{
+  "document": "Firenze, 5 dicembre 2024 — Il professor Antonio Belli dell'Università di Firenze ha pubblicato uno studio rivoluzionario sull'arte rinascimentale italiana, analizzando opere inedite di artisti fiorentini del XV secolo.",
+  "output": "{\"people\":[\"Antonio Belli\"],\"dates\":[\"5 dicembre 2024\",\"XV secolo\"],\"places\":[\"Firenze\",\"Università di Firenze\"],\"categories\":[\"ricerca\",\"arte\",\"storia\",\"università\"],\"hashtags\":[\"#firenze\",\"#rinascimento\",\"#arte\",\"#ricerca\",\"#università\"]}"
+}
