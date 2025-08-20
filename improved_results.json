@@ -1,0 +1,29 @@
+{
+  "gemma": {
+    "precision": 0.43766601987755827,
+    "recall": 0.6861263736263735,
+    "f1": 0.5314137294593951,
+    "total_time": 129.69733095169067,
+    "avg_time_per_example": 2.494179441378667,
+    "examples_processed": 52,
+    "examples_per_second": 0.4009334626891345
+  },
+  "bert": {
+    "precision": 0.847069597069597,
+    "recall": 0.7074175824175822,
+    "f1": 0.7642953200645507,
+    "total_time": 54.874778032302856,
+    "avg_time_per_example": 1.0552841929289012,
+    "examples_processed": 52,
+    "examples_per_second": 0.9476120335172822
+  },
+  "keybert": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "total_time": 0.011846780776977539,
+    "avg_time_per_example": 0.00022782270724956805,
+    "examples_processed": 52,
+    "examples_per_second": 4389.378091730564
+  }
+}
