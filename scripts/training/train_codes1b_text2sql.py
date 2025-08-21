@@ -114,10 +114,15 @@ def setup_model_and_tokenizer(model_name: str, lora_r: int = 16):
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
     
+    print(f"Loading model {model_name} with 4-bit quantization for 4GB VRAM compatibility...")
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-        device_map="auto" if torch.cuda.is_available() else None
+        torch_dtype=torch.bfloat16,
+        load_in_4bit=True,
+        bnb_4bit_compute_dtype=torch.bfloat16,
+        bnb_4bit_use_double_quant=True,
+        bnb_4bit_quant_type="nf4",
+        device_map="auto"
     )
     
     logger.info(f"Applying LoRA with r={lora_r}")

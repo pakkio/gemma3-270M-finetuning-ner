@@ -80,12 +80,15 @@ def setup_multitask_model(model_id, lora_config):
     """Setup Gemma3 model for multi-task learning."""
     print(f"🔄 Loading model: {model_id}")
     
-    # Load model and tokenizer
+    # Load model and tokenizer with 8-bit quantization
+    print(f"Loading model {model_id} with 8-bit quantization for 4GB VRAM compatibility...")
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
-        torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-        device_map="auto" if torch.cuda.is_available() else None,
-        trust_remote_code=True
+        torch_dtype=torch.bfloat16,
+        load_in_8bit=True,
+        device_map="auto",
+        trust_remote_code=True,
+        attn_implementation="eager"  # Recommended for Gemma3 training stability
     )
     
     tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)

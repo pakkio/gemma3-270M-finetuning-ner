@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-Fine-tune CodeS-1B for Italian Hashtag Generation
-Fair comparison with Gemma3-270M on the same hashtag dataset
+Fine-tune Gemma3 270M for Italian Text-to-SQL task
 """
 
 import argparse
@@ -28,30 +27,48 @@ from peft import LoraConfig, get_peft_model, TaskType
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def preprocess_function(examples, tokenizer, max_length=512):
-    """Preprocess examples for hashtag generation training"""
+def create_training_example(question: str, sql: str) -> str:
+    """Create a training example in instruction format"""
+    return f"""### Istruzione:
+Converti la seguente domanda italiana in una query SQL.
+
+### Domanda:
+{question}
+
+### SQL:
+{sql}
+
+### Fine"""
+
+def preprocess_function(examples, tokenizer, max_length=1024):
+    """Preprocess examples for training with proper label masking"""
     input_ids_list = []
     labels_list = []
     attention_mask_list = []
     
-    for document, hashtags in zip(examples["document"], examples["hashtags"]):
+    for question, sql in zip(examples["question"], examples["sql"]):
         # Create the input prompt (what model sees during inference)
-        input_prompt = f"""### Task: Generate relevant hashtags for this Italian text
-### Text: {document}
-### Hashtags: """
+        input_prompt = f"""### Istruzione:
+Converti la seguente domanda italiana in una query SQL.
+
+### Domanda:
+{question}
+
+### SQL:
+"""
         
         # Create the target (what we want model to generate)
-        target = f"{hashtags}"
+        target = f"{sql}\n\n### Fine"
         
         # Tokenize input and target separately
         input_tokens = tokenizer(input_prompt, add_special_tokens=False)["input_ids"]
         target_tokens = tokenizer(target, add_special_tokens=False)["input_ids"]
         
         # Combine for full sequence
-        full_input_ids = input_tokens + target_tokens
+        full_input_ids = [tokenizer.bos_token_id] + input_tokens + target_tokens
         
         # Create labels: -100 for input portion, actual tokens for target portion
-        labels = [-100] * len(input_tokens) + target_tokens
+        labels = [-100] * (len(input_tokens) + 1) + target_tokens  # +1 for bos_token
         
         # Truncate if too long
         if len(full_input_ids) > max_length:
@@ -88,7 +105,7 @@ def preprocess_function(examples, tokenizer, max_length=512):
     }
 
 def load_data(train_path: str, val_path: str):
-    """Load and prepare hashtag training data"""
+    """Load and prepare training data"""
     logger.info(f"Loading training data from {train_path}")
     train_dataset = load_dataset("json", data_files=train_path, split="train")
     
@@ -101,17 +118,20 @@ def load_data(train_path: str, val_path: str):
     return train_dataset, val_dataset
 
 def setup_model_and_tokenizer(model_name: str, lora_r: int = 16):
-    """Setup CodeS-1B model and tokenizer with LoRA"""
-    logger.info(f"Loading CodeS-1B model and tokenizer: {model_name}")
+    """Setup Gemma3 model and tokenizer with LoRA"""
+    logger.info(f"Loading model and tokenizer: {model_name}")
     
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
     
+    print(f"Loading model {model_name} with 8-bit quantization for 4GB VRAM compatibility...")
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-        device_map="auto" if torch.cuda.is_available() else None
+        torch_dtype=torch.bfloat16,
+        load_in_8bit=True,
+        device_map="auto",
+        attn_implementation="eager"  # Recommended for Gemma3 training stability
     )
     
     logger.info(f"Applying LoRA with r={lora_r}")
@@ -121,7 +141,7 @@ def setup_model_and_tokenizer(model_name: str, lora_r: int = 16):
         r=lora_r,
         lora_alpha=lora_r * 2,
         lora_dropout=0.1,
-        target_modules=["c_attn", "c_proj", "c_fc"]  # GPT BigCode architecture modules
+        target_modules=["q_proj", "v_proj", "k_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
     )
     model = get_peft_model(model, lora_config)
     model.print_trainable_parameters()
@@ -129,26 +149,26 @@ def setup_model_and_tokenizer(model_name: str, lora_r: int = 16):
     return model, tokenizer
 
 def main():
-    parser = argparse.ArgumentParser(description="Fine-tune CodeS-1B for Italian Hashtag Generation")
-    parser.add_argument("--model_name", type=str, default="seeklhy/codes-1b", 
-                       help="CodeS-1B model to fine-tune")
-    parser.add_argument("--train_path", type=str, default="data/train_hashtagger.jsonl",
+    parser = argparse.ArgumentParser(description="Fine-tune Gemma3 for Italian Text-to-SQL")
+    parser.add_argument("--model_name", type=str, default="google/gemma-2-2b", 
+                       help="Gemma model to fine-tune")
+    parser.add_argument("--train_path", type=str, default="data/train_text2sql.jsonl",
                        help="Path to training data")
-    parser.add_argument("--val_path", type=str, default="data/val_hashtagger.jsonl",
+    parser.add_argument("--val_path", type=str, default="data/val_text2sql.jsonl",
                        help="Path to validation data")
-    parser.add_argument("--output_dir", type=str, default="outputs/codes-1b-hashtag-generator",
+    parser.add_argument("--output_dir", type=str, default="outputs/gemma3-text2sql",
                        help="Output directory for the model")
-    parser.add_argument("--epochs", type=int, default=3, help="Number of training epochs")
+    parser.add_argument("--epochs", type=int, default=5, help="Number of training epochs")
     parser.add_argument("--batch_size", type=int, default=4, help="Training batch size")
-    parser.add_argument("--lr", type=float, default=2e-4, help="Learning rate")
-    parser.add_argument("--max_length", type=int, default=512, help="Maximum sequence length")
-    parser.add_argument("--lora_r", type=int, default=16, help="LoRA rank")
+    parser.add_argument("--lr", type=float, default=1e-4, help="Learning rate")
+    parser.add_argument("--max_length", type=int, default=1024, help="Maximum sequence length")
+    parser.add_argument("--lora_r", type=int, default=32, help="LoRA rank")
     parser.add_argument("--bf16", action="store_true", help="Use bfloat16 precision")
     parser.add_argument("--gradient_checkpointing", action="store_true", help="Use gradient checkpointing")
     
     args = parser.parse_args()
     
-    logger.info("Starting CodeS-1B Italian Hashtag Generation fine-tuning")
+    logger.info("Starting Gemma3 Text-to-SQL fine-tuning")
     logger.info(f"Arguments: {args}")
     
     # Load data
@@ -178,32 +198,29 @@ def main():
         pad_to_multiple_of=8
     )
     
-    # Training arguments optimized for CodeS-1B and hashtag dataset
+    # Training arguments
     training_args = TrainingArguments(
         output_dir=args.output_dir,
         num_train_epochs=args.epochs,
         per_device_train_batch_size=args.batch_size,
         per_device_eval_batch_size=args.batch_size,
         learning_rate=args.lr,
-        warmup_steps=50,  
+        warmup_steps=100,
         logging_dir=f"{args.output_dir}/logs",
         logging_steps=20,
         eval_strategy="steps",
         eval_steps=50,
-        save_strategy="steps", 
+        save_strategy="steps",
         save_steps=100,
         load_best_model_at_end=True,
         metric_for_best_model="eval_loss",
         bf16=args.bf16 and torch.cuda.is_available(),
         fp16=not args.bf16 and torch.cuda.is_available(),
         gradient_checkpointing=args.gradient_checkpointing,
-        dataloader_num_workers=2,
+        dataloader_num_workers=4,
         remove_unused_columns=False,
         report_to="none",
-        gradient_accumulation_steps=2,
-        weight_decay=0.01,
-        lr_scheduler_type="cosine",
-        save_total_limit=2,
+        gradient_accumulation_steps=2
     )
     
     # Initialize trainer
@@ -230,54 +247,6 @@ def main():
     trainer.save_model()
     tokenizer.save_pretrained(args.output_dir)
     
-    # Save inference template
-    inference_template = f"""### CodeS-1B Italian Hashtag Generator Usage:
-
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from peft import PeftModel
-import torch
-
-# Load model
-tokenizer = AutoTokenizer.from_pretrained("{args.output_dir}")
-base_model = AutoModelForCausalLM.from_pretrained("seeklhy/codes-1b", torch_dtype=torch.float16)
-model = PeftModel.from_pretrained(base_model, "{args.output_dir}")
-
-if tokenizer.pad_token is None:
-    tokenizer.pad_token = tokenizer.eos_token
-
-# Generate hashtags from Italian text
-def generate_hashtags(text):
-    prompt = '''### Task: Generate relevant hashtags for this Italian text
-### Text: {{text}}
-### Hashtags: '''.format(text=text)
-    
-    inputs = tokenizer(prompt, return_tensors="pt", truncation=True, max_length=512)
-    outputs = model.generate(
-        **inputs,
-        max_new_tokens=50,
-        temperature=0.7,
-        do_sample=True,
-        pad_token_id=tokenizer.eos_token_id,
-        eos_token_id=tokenizer.eos_token_id
-    )
-    
-    # Extract only generated part
-    generated_tokens = outputs[0][inputs['input_ids'].shape[1]:]
-    result = tokenizer.decode(generated_tokens, skip_special_tokens=True)
-    
-    # Clean result
-    hashtags = result.strip().split('\\n')[0].split('###')[0].strip()
-    
-    return hashtags
-
-# Example usage:
-# hashtags = generate_hashtags("Bologna, 15 maggio 2025 — L'Università di Bologna inaugura il nuovo centro di ricerca sulla vulcanologia")
-# print(hashtags)  # Should output: #bologna #università #vulcanologia #ricerca
-"""
-    
-    with open(f"{args.output_dir}/inference_template.py", "w") as f:
-        f.write(inference_template)
-    
     # Save training configuration
     config = {
         "model_name": args.model_name,
@@ -287,17 +256,15 @@ def generate_hashtags(text):
         "training_time_seconds": training_time,
         "final_train_loss": train_result.training_loss,
         "lora_r": args.lora_r,
-        "timestamp": datetime.now().isoformat(),
-        "comparison_note": "CodeS-1B vs Gemma3-270M for Italian hashtag generation - fair comparison"
+        "timestamp": datetime.now().isoformat()
     }
     
     with open(f"{args.output_dir}/training_config.json", "w") as f:
         json.dump(config, f, indent=2)
     
-    logger.info("CodeS-1B Italian Hashtag Generation fine-tuning completed successfully!")
+    logger.info("Gemma3 fine-tuning completed successfully!")
     logger.info(f"Model saved to: {args.output_dir}")
     logger.info(f"Training time: {training_time:.2f} seconds")
-    logger.info(f"Final training loss: {train_result.training_loss:.4f}")
 
 if __name__ == "__main__":
     main()

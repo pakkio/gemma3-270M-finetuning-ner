@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Fine-tune Gemma3 270M for Italian Intent Classification
-Perfect use case for small language models - short inputs, limited vocabulary output
+Fine-tune CodeS-1B for Italian Hashtag Generation
+Fair comparison with Gemma3-270M on the same hashtag dataset
 """
 
 import argparse
@@ -28,42 +28,30 @@ from peft import LoraConfig, get_peft_model, TaskType
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def create_training_example(text: str, intent: str) -> str:
-    """Create a training example in instruction format"""
-    return f"""### Testo:
-{text}
-
-### Intent:
-{intent}
-
-### Fine"""
-
-def preprocess_function(examples, tokenizer, max_length=256):
-    """Preprocess examples for training with proper label masking"""
+def preprocess_function(examples, tokenizer, max_length=512):
+    """Preprocess examples for hashtag generation training"""
     input_ids_list = []
     labels_list = []
     attention_mask_list = []
     
-    for text, intent in zip(examples["text"], examples["intent"]):
+    for document, hashtags in zip(examples["document"], examples["hashtags"]):
         # Create the input prompt (what model sees during inference)
-        input_prompt = f"""### Testo:
-{text}
-
-### Intent:
-"""
+        input_prompt = f"""### Task: Generate relevant hashtags for this Italian text
+### Text: {document}
+### Hashtags: """
         
         # Create the target (what we want model to generate)
-        target = f"{intent}\n\n### Fine"
+        target = f"{hashtags}"
         
         # Tokenize input and target separately
         input_tokens = tokenizer(input_prompt, add_special_tokens=False)["input_ids"]
         target_tokens = tokenizer(target, add_special_tokens=False)["input_ids"]
         
         # Combine for full sequence
-        full_input_ids = [tokenizer.bos_token_id] + input_tokens + target_tokens
+        full_input_ids = input_tokens + target_tokens
         
         # Create labels: -100 for input portion, actual tokens for target portion
-        labels = [-100] * (len(input_tokens) + 1) + target_tokens  # +1 for bos_token
+        labels = [-100] * len(input_tokens) + target_tokens
         
         # Truncate if too long
         if len(full_input_ids) > max_length:
@@ -100,7 +88,7 @@ def preprocess_function(examples, tokenizer, max_length=256):
     }
 
 def load_data(train_path: str, val_path: str):
-    """Load and prepare training data"""
+    """Load and prepare hashtag training data"""
     logger.info(f"Loading training data from {train_path}")
     train_dataset = load_dataset("json", data_files=train_path, split="train")
     
@@ -110,30 +98,25 @@ def load_data(train_path: str, val_path: str):
     logger.info(f"Training examples: {len(train_dataset)}")
     logger.info(f"Validation examples: {len(val_dataset)}")
     
-    # Show intent distribution
-    intents = train_dataset['intent']
-    intent_counts = {}
-    for intent in intents:
-        intent_counts[intent] = intent_counts.get(intent, 0) + 1
-    
-    logger.info("Intent distribution:")
-    for intent, count in sorted(intent_counts.items()):
-        logger.info(f"  {intent}: {count}")
-    
     return train_dataset, val_dataset
 
-def setup_model_and_tokenizer(model_name: str, lora_r: int = 8):
-    """Setup Gemma3 model and tokenizer with LoRA"""
-    logger.info(f"Loading model and tokenizer: {model_name}")
+def setup_model_and_tokenizer(model_name: str, lora_r: int = 16):
+    """Setup CodeS-1B model and tokenizer with LoRA"""
+    logger.info(f"Loading CodeS-1B model and tokenizer: {model_name}")
     
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
     
+    print(f"Loading model {model_name} with 4-bit quantization for 4GB VRAM compatibility...")
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-        device_map="auto" if torch.cuda.is_available() else None
+        torch_dtype=torch.bfloat16,
+        load_in_4bit=True,
+        bnb_4bit_compute_dtype=torch.bfloat16,
+        bnb_4bit_use_double_quant=True,
+        bnb_4bit_quant_type="nf4",
+        device_map="auto"
     )
     
     logger.info(f"Applying LoRA with r={lora_r}")
@@ -143,7 +126,7 @@ def setup_model_and_tokenizer(model_name: str, lora_r: int = 8):
         r=lora_r,
         lora_alpha=lora_r * 2,
         lora_dropout=0.1,
-        target_modules=["q_proj", "v_proj", "k_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
+        target_modules=["c_attn", "c_proj", "c_fc"]  # GPT BigCode architecture modules
     )
     model = get_peft_model(model, lora_config)
     model.print_trainable_parameters()
@@ -151,26 +134,26 @@ def setup_model_and_tokenizer(model_name: str, lora_r: int = 8):
     return model, tokenizer
 
 def main():
-    parser = argparse.ArgumentParser(description="Fine-tune Gemma3 for Intent Classification")
-    parser.add_argument("--model_name", type=str, default="google/gemma-3-270m", 
-                       help="Gemma model to fine-tune")
-    parser.add_argument("--train_path", type=str, default="data/train_intent_classification.jsonl",
+    parser = argparse.ArgumentParser(description="Fine-tune CodeS-1B for Italian Hashtag Generation")
+    parser.add_argument("--model_name", type=str, default="seeklhy/codes-1b", 
+                       help="CodeS-1B model to fine-tune")
+    parser.add_argument("--train_path", type=str, default="data/train_hashtagger.jsonl",
                        help="Path to training data")
-    parser.add_argument("--val_path", type=str, default="data/val_intent_classification.jsonl",
+    parser.add_argument("--val_path", type=str, default="data/val_hashtagger.jsonl",
                        help="Path to validation data")
-    parser.add_argument("--output_dir", type=str, default="outputs/gemma3-intent-classifier",
+    parser.add_argument("--output_dir", type=str, default="outputs/codes-1b-hashtag-generator",
                        help="Output directory for the model")
-    parser.add_argument("--epochs", type=int, default=4, help="Number of training epochs")
-    parser.add_argument("--batch_size", type=int, default=8, help="Training batch size")
-    parser.add_argument("--lr", type=float, default=1e-4, help="Learning rate")
-    parser.add_argument("--max_length", type=int, default=256, help="Maximum sequence length")
-    parser.add_argument("--lora_r", type=int, default=8, help="LoRA rank")
+    parser.add_argument("--epochs", type=int, default=3, help="Number of training epochs")
+    parser.add_argument("--batch_size", type=int, default=4, help="Training batch size")
+    parser.add_argument("--lr", type=float, default=2e-4, help="Learning rate")
+    parser.add_argument("--max_length", type=int, default=512, help="Maximum sequence length")
+    parser.add_argument("--lora_r", type=int, default=16, help="LoRA rank")
     parser.add_argument("--bf16", action="store_true", help="Use bfloat16 precision")
     parser.add_argument("--gradient_checkpointing", action="store_true", help="Use gradient checkpointing")
     
     args = parser.parse_args()
     
-    logger.info("Starting Gemma3 Intent Classification fine-tuning")
+    logger.info("Starting CodeS-1B Italian Hashtag Generation fine-tuning")
     logger.info(f"Arguments: {args}")
     
     # Load data
@@ -200,20 +183,20 @@ def main():
         pad_to_multiple_of=8
     )
     
-    # Training arguments optimized for intent classification
+    # Training arguments optimized for CodeS-1B and hashtag dataset
     training_args = TrainingArguments(
         output_dir=args.output_dir,
         num_train_epochs=args.epochs,
         per_device_train_batch_size=args.batch_size,
         per_device_eval_batch_size=args.batch_size,
         learning_rate=args.lr,
-        warmup_steps=50,  # Reduced for smaller dataset
+        warmup_steps=50,  
         logging_dir=f"{args.output_dir}/logs",
-        logging_steps=10,
+        logging_steps=20,
         eval_strategy="steps",
-        eval_steps=25,
-        save_strategy="steps",
-        save_steps=50,
+        eval_steps=50,
+        save_strategy="steps", 
+        save_steps=100,
         load_best_model_at_end=True,
         metric_for_best_model="eval_loss",
         bf16=args.bf16 and torch.cuda.is_available(),
@@ -222,10 +205,10 @@ def main():
         dataloader_num_workers=2,
         remove_unused_columns=False,
         report_to="none",
-        gradient_accumulation_steps=1,  # No accumulation for small batches
-        weight_decay=0.01,  # Small regularization
-        lr_scheduler_type="cosine",  # Cosine decay for better convergence
-        save_total_limit=3,  # Keep only best checkpoints
+        gradient_accumulation_steps=2,
+        weight_decay=0.01,
+        lr_scheduler_type="cosine",
+        save_total_limit=2,
     )
     
     # Initialize trainer
@@ -252,14 +235,8 @@ def main():
     trainer.save_model()
     tokenizer.save_pretrained(args.output_dir)
     
-    # Get unique intents for inference template
-    intents = set(train_dataset.column_names)  # This won't work after preprocessing
-    # Let's get intents from the original data
-    original_train = load_dataset("json", data_files=args.train_path, split="train")
-    unique_intents = sorted(set(original_train['intent']))
-    
     # Save inference template
-    inference_template = f"""### Intent Classification Usage:
+    inference_template = f"""### CodeS-1B Italian Hashtag Generator Usage:
 
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel
@@ -267,26 +244,24 @@ import torch
 
 # Load model
 tokenizer = AutoTokenizer.from_pretrained("{args.output_dir}")
-base_model = AutoModelForCausalLM.from_pretrained("google/gemma-3-270m", torch_dtype=torch.float16)
+base_model = AutoModelForCausalLM.from_pretrained("seeklhy/codes-1b", torch_dtype=torch.float16)
 model = PeftModel.from_pretrained(base_model, "{args.output_dir}")
 
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
 
-# Classify intent
-def classify_intent(text):
-    prompt = '''### Testo:
-{{text}}
-
-### Intent:
-'''.format(text=text)
+# Generate hashtags from Italian text
+def generate_hashtags(text):
+    prompt = '''### Task: Generate relevant hashtags for this Italian text
+### Text: {{text}}
+### Hashtags: '''.format(text=text)
     
-    inputs = tokenizer(prompt, return_tensors="pt")
+    inputs = tokenizer(prompt, return_tensors="pt", truncation=True, max_length=512)
     outputs = model.generate(
         **inputs,
-        max_new_tokens=20,
-        temperature=0.1,
-        do_sample=False,
+        max_new_tokens=50,
+        temperature=0.7,
+        do_sample=True,
         pad_token_id=tokenizer.eos_token_id,
         eos_token_id=tokenizer.eos_token_id
     )
@@ -296,21 +271,16 @@ def classify_intent(text):
     result = tokenizer.decode(generated_tokens, skip_special_tokens=True)
     
     # Clean result
-    intent = result.strip().split('\\n')[0].strip()
-    if '###' in intent:
-        intent = intent.split('###')[0].strip()
+    hashtags = result.strip().split('\\n')[0].split('###')[0].strip()
     
-    return intent
-
-# Available intents:
-{', '.join(unique_intents)}
+    return hashtags
 
 # Example usage:
-# intent = classify_intent("Non riesco ad accedere al mio account")
-# print(intent)  # Should output: account_access
+# hashtags = generate_hashtags("Bologna, 15 maggio 2025 — L'Università di Bologna inaugura il nuovo centro di ricerca sulla vulcanologia")
+# print(hashtags)  # Should output: #bologna #università #vulcanologia #ricerca
 """
     
-    with open(f"{args.output_dir}/inference_template.txt", "w") as f:
+    with open(f"{args.output_dir}/inference_template.py", "w") as f:
         f.write(inference_template)
     
     # Save training configuration
@@ -319,21 +289,19 @@ def classify_intent(text):
         "training_args": training_args.to_dict(),
         "train_examples": len(train_dataset),
         "val_examples": len(val_dataset),
-        "unique_intents": unique_intents,
-        "num_intents": len(unique_intents),
         "training_time_seconds": training_time,
         "final_train_loss": train_result.training_loss,
         "lora_r": args.lora_r,
-        "timestamp": datetime.now().isoformat()
+        "timestamp": datetime.now().isoformat(),
+        "comparison_note": "CodeS-1B vs Gemma3-270M for Italian hashtag generation - fair comparison"
     }
     
     with open(f"{args.output_dir}/training_config.json", "w") as f:
         json.dump(config, f, indent=2)
     
-    logger.info("Gemma3 Intent Classification fine-tuning completed successfully!")
+    logger.info("CodeS-1B Italian Hashtag Generation fine-tuning completed successfully!")
     logger.info(f"Model saved to: {args.output_dir}")
     logger.info(f"Training time: {training_time:.2f} seconds")
-    logger.info(f"Unique intents: {len(unique_intents)}")
     logger.info(f"Final training loss: {train_result.training_loss:.4f}")
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-Fine-tune Gemma3 270M for Italian Text-to-SQL task
+Fine-tune Gemma3 270M for Italian Intent Classification
+Perfect use case for small language models - short inputs, limited vocabulary output
 """
 
 import argparse
@@ -27,38 +28,32 @@ from peft import LoraConfig, get_peft_model, TaskType
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def create_training_example(question: str, sql: str) -> str:
+def create_training_example(text: str, intent: str) -> str:
     """Create a training example in instruction format"""
-    return f"""### Istruzione:
-Converti la seguente domanda italiana in una query SQL.
+    return f"""### Testo:
+{text}
 
-### Domanda:
-{question}
-
-### SQL:
-{sql}
+### Intent:
+{intent}
 
 ### Fine"""
 
-def preprocess_function(examples, tokenizer, max_length=1024):
+def preprocess_function(examples, tokenizer, max_length=256):
     """Preprocess examples for training with proper label masking"""
     input_ids_list = []
     labels_list = []
     attention_mask_list = []
     
-    for question, sql in zip(examples["question"], examples["sql"]):
+    for text, intent in zip(examples["text"], examples["intent"]):
         # Create the input prompt (what model sees during inference)
-        input_prompt = f"""### Istruzione:
-Converti la seguente domanda italiana in una query SQL.
+        input_prompt = f"""### Testo:
+{text}
 
-### Domanda:
-{question}
-
-### SQL:
+### Intent:
 """
         
         # Create the target (what we want model to generate)
-        target = f"{sql}\n\n### Fine"
+        target = f"{intent}\n\n### Fine"
         
         # Tokenize input and target separately
         input_tokens = tokenizer(input_prompt, add_special_tokens=False)["input_ids"]
@@ -115,9 +110,19 @@ def load_data(train_path: str, val_path: str):
     logger.info(f"Training examples: {len(train_dataset)}")
     logger.info(f"Validation examples: {len(val_dataset)}")
     
+    # Show intent distribution
+    intents = train_dataset['intent']
+    intent_counts = {}
+    for intent in intents:
+        intent_counts[intent] = intent_counts.get(intent, 0) + 1
+    
+    logger.info("Intent distribution:")
+    for intent, count in sorted(intent_counts.items()):
+        logger.info(f"  {intent}: {count}")
+    
     return train_dataset, val_dataset
 
-def setup_model_and_tokenizer(model_name: str, lora_r: int = 16):
+def setup_model_and_tokenizer(model_name: str, lora_r: int = 8):
     """Setup Gemma3 model and tokenizer with LoRA"""
     logger.info(f"Loading model and tokenizer: {model_name}")
     
@@ -125,10 +130,13 @@ def setup_model_and_tokenizer(model_name: str, lora_r: int = 16):
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
     
+    print(f"Loading model {model_name} with 8-bit quantization for 4GB VRAM compatibility...")
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-        device_map="auto" if torch.cuda.is_available() else None
+        torch_dtype=torch.bfloat16,
+        load_in_8bit=True,
+        device_map="auto",
+        attn_implementation="eager"  # Recommended for Gemma3 training stability
     )
     
     logger.info(f"Applying LoRA with r={lora_r}")
@@ -146,26 +154,26 @@ def setup_model_and_tokenizer(model_name: str, lora_r: int = 16):
     return model, tokenizer
 
 def main():
-    parser = argparse.ArgumentParser(description="Fine-tune Gemma3 for Italian Text-to-SQL")
-    parser.add_argument("--model_name", type=str, default="google/gemma-2-2b", 
+    parser = argparse.ArgumentParser(description="Fine-tune Gemma3 for Intent Classification")
+    parser.add_argument("--model_name", type=str, default="google/gemma-3-270m", 
                        help="Gemma model to fine-tune")
-    parser.add_argument("--train_path", type=str, default="data/train_text2sql.jsonl",
+    parser.add_argument("--train_path", type=str, default="data/train_intent_classification.jsonl",
                        help="Path to training data")
-    parser.add_argument("--val_path", type=str, default="data/val_text2sql.jsonl",
+    parser.add_argument("--val_path", type=str, default="data/val_intent_classification.jsonl",
                        help="Path to validation data")
-    parser.add_argument("--output_dir", type=str, default="outputs/gemma3-text2sql",
+    parser.add_argument("--output_dir", type=str, default="outputs/gemma3-intent-classifier",
                        help="Output directory for the model")
-    parser.add_argument("--epochs", type=int, default=5, help="Number of training epochs")
-    parser.add_argument("--batch_size", type=int, default=4, help="Training batch size")
+    parser.add_argument("--epochs", type=int, default=4, help="Number of training epochs")
+    parser.add_argument("--batch_size", type=int, default=8, help="Training batch size")
     parser.add_argument("--lr", type=float, default=1e-4, help="Learning rate")
-    parser.add_argument("--max_length", type=int, default=1024, help="Maximum sequence length")
-    parser.add_argument("--lora_r", type=int, default=32, help="LoRA rank")
+    parser.add_argument("--max_length", type=int, default=256, help="Maximum sequence length")
+    parser.add_argument("--lora_r", type=int, default=8, help="LoRA rank")
     parser.add_argument("--bf16", action="store_true", help="Use bfloat16 precision")
     parser.add_argument("--gradient_checkpointing", action="store_true", help="Use gradient checkpointing")
     
     args = parser.parse_args()
     
-    logger.info("Starting Gemma3 Text-to-SQL fine-tuning")
+    logger.info("Starting Gemma3 Intent Classification fine-tuning")
     logger.info(f"Arguments: {args}")
     
     # Load data
@@ -195,29 +203,32 @@ def main():
         pad_to_multiple_of=8
     )
     
-    # Training arguments
+    # Training arguments optimized for intent classification
     training_args = TrainingArguments(
         output_dir=args.output_dir,
         num_train_epochs=args.epochs,
         per_device_train_batch_size=args.batch_size,
         per_device_eval_batch_size=args.batch_size,
         learning_rate=args.lr,
-        warmup_steps=100,
+        warmup_steps=50,  # Reduced for smaller dataset
         logging_dir=f"{args.output_dir}/logs",
-        logging_steps=20,
+        logging_steps=10,
         eval_strategy="steps",
-        eval_steps=50,
+        eval_steps=25,
         save_strategy="steps",
-        save_steps=100,
+        save_steps=50,
         load_best_model_at_end=True,
         metric_for_best_model="eval_loss",
         bf16=args.bf16 and torch.cuda.is_available(),
         fp16=not args.bf16 and torch.cuda.is_available(),
         gradient_checkpointing=args.gradient_checkpointing,
-        dataloader_num_workers=4,
+        dataloader_num_workers=2,
         remove_unused_columns=False,
         report_to="none",
-        gradient_accumulation_steps=2
+        gradient_accumulation_steps=1,  # No accumulation for small batches
+        weight_decay=0.01,  # Small regularization
+        lr_scheduler_type="cosine",  # Cosine decay for better convergence
+        save_total_limit=3,  # Keep only best checkpoints
     )
     
     # Initialize trainer
@@ -244,12 +255,75 @@ def main():
     trainer.save_model()
     tokenizer.save_pretrained(args.output_dir)
     
+    # Get unique intents for inference template
+    intents = set(train_dataset.column_names)  # This won't work after preprocessing
+    # Let's get intents from the original data
+    original_train = load_dataset("json", data_files=args.train_path, split="train")
+    unique_intents = sorted(set(original_train['intent']))
+    
+    # Save inference template
+    inference_template = f"""### Intent Classification Usage:
+
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from peft import PeftModel
+import torch
+
+# Load model
+tokenizer = AutoTokenizer.from_pretrained("{args.output_dir}")
+base_model = AutoModelForCausalLM.from_pretrained("google/gemma-3-270m", torch_dtype=torch.float16)
+model = PeftModel.from_pretrained(base_model, "{args.output_dir}")
+
+if tokenizer.pad_token is None:
+    tokenizer.pad_token = tokenizer.eos_token
+
+# Classify intent
+def classify_intent(text):
+    prompt = '''### Testo:
+{{text}}
+
+### Intent:
+'''.format(text=text)
+    
+    inputs = tokenizer(prompt, return_tensors="pt")
+    outputs = model.generate(
+        **inputs,
+        max_new_tokens=20,
+        temperature=0.1,
+        do_sample=False,
+        pad_token_id=tokenizer.eos_token_id,
+        eos_token_id=tokenizer.eos_token_id
+    )
+    
+    # Extract only generated part
+    generated_tokens = outputs[0][inputs['input_ids'].shape[1]:]
+    result = tokenizer.decode(generated_tokens, skip_special_tokens=True)
+    
+    # Clean result
+    intent = result.strip().split('\\n')[0].strip()
+    if '###' in intent:
+        intent = intent.split('###')[0].strip()
+    
+    return intent
+
+# Available intents:
+{', '.join(unique_intents)}
+
+# Example usage:
+# intent = classify_intent("Non riesco ad accedere al mio account")
+# print(intent)  # Should output: account_access
+"""
+    
+    with open(f"{args.output_dir}/inference_template.txt", "w") as f:
+        f.write(inference_template)
+    
     # Save training configuration
     config = {
         "model_name": args.model_name,
         "training_args": training_args.to_dict(),
         "train_examples": len(train_dataset),
         "val_examples": len(val_dataset),
+        "unique_intents": unique_intents,
+        "num_intents": len(unique_intents),
         "training_time_seconds": training_time,
         "final_train_loss": train_result.training_loss,
         "lora_r": args.lora_r,
@@ -259,9 +333,11 @@ def main():
     with open(f"{args.output_dir}/training_config.json", "w") as f:
         json.dump(config, f, indent=2)
     
-    logger.info("Gemma3 fine-tuning completed successfully!")
+    logger.info("Gemma3 Intent Classification fine-tuning completed successfully!")
     logger.info(f"Model saved to: {args.output_dir}")
     logger.info(f"Training time: {training_time:.2f} seconds")
+    logger.info(f"Unique intents: {len(unique_intents)}")
+    logger.info(f"Final training loss: {train_result.training_loss:.4f}")
 
 if __name__ == "__main__":
     main()

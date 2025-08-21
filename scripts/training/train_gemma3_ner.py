@@ -4,6 +4,7 @@
 import os
 import json
 import argparse
+import torch
 from datasets import load_dataset
 from transformers import (
     AutoModelForCausalLM,
@@ -135,10 +136,14 @@ def main():
         tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
 
+    print(f"Loading model {args.model_id} with 8-bit quantization for 4GB VRAM compatibility...")
     model = AutoModelForCausalLM.from_pretrained(
         args.model_id,
         trust_remote_code=True,
-        torch_dtype="auto"
+        torch_dtype=torch.bfloat16,
+        load_in_8bit=True,
+        device_map="auto",
+        attn_implementation="eager"  # Recommended for Gemma3 training stability
     )
 
     lora = LoraConfig(
