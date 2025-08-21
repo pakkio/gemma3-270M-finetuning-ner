@@ -1,0 +1,17 @@
+{
+  "total_examples": 205,
+  "training_examples": 153,
+  "validation_examples": 52,
+  "domains": [
+    "politica",
+    "cultura",
+    "sport",
+    "tecnologia",
+    "economia",
+    "gastronomia",
+    "ambiente",
+    "università"
+  ],
+  "average_hashtags_per_example": 7.121951219512195,
+  "average_document_length": 147.85365853658536
+}

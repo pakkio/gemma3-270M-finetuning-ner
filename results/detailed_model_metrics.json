@@ -1,0 +1,105 @@
+{
+  "intent_classification": {
+    "codes_1b": {
+      "accuracy": 0.25,
+      "precision": 0.17500000000000002,
+      "recall": 0.25,
+      "f1": 0.1818181818181818,
+      "avg_inference_time": 1.498801867167155,
+      "predictions": [
+        [
+          "account_access",
+          "account_access"
+        ],
+        [
+          "order_cancellation",
+          "account_access"
+        ],
+        [
+          "order_tracking",
+          "account_access"
+        ],
+        [
+          "return_refund",
+          "account_access"
+        ],
+        [
+          "payment_issues",
+          "payment_issues"
+        ],
+        [
+          "shipping_info",
+          "account_access"
+        ],
+        [
+          "product_availability",
+          "account_access"
+        ],
+        [
+          "product_info",
+          "account_access"
+        ],
+        [
+          "promotions_discounts",
+          "account_access"
+        ],
+        [
+          "technical_support",
+          "account_access"
+        ],
+        [
+          "account_management",
+          "account_access"
+        ],
+        [
+          "general_inquiry",
+          "general_inquiry"
+        ]
+      ]
+    }
+  },
+  "text_to_sql": {
+    "codes_1b": {
+      "accuracy": 0.625,
+      "precision": 0.625,
+      "recall": 0.625,
+      "f1": 0.625,
+      "avg_inference_time": 7.588113754987717,
+      "predictions": [
+        [
+          "Mostra tutti i clienti di Milano",
+          "SELECT * FROM clienti WHERE citta = 'Milano';"
+        ],
+        [
+          "Quali sono i prodotti con prezzo superiore a 100 euro?",
+          "SELECT * FROM prodotti WHERE prezzo > 100;"
+        ],
+        [
+          "Conta quanti ordini sono stati effettuati nel 2024",
+          "SELECT COUNT(*) as numero_ordini_2024 FROM ordini WHERE YEAR(data_ordine) = 2024;"
+        ],
+        [
+          "Trova i dipendenti del dipartimento vendite",
+          "SELECT * FROM dipendenti WHERE dipartimento ='vendite';"
+        ],
+        [
+          "Elenca tutti i prodotti della categoria elettronica",
+          "SELECT * FROM prodotti WHERE categoria = 'elettronica';"
+        ],
+        [
+          "Mostra il nome e cognome dei clienti di Roma",
+          "SELECT nome, cognome FROM clienti WHERE citta = 'Roma';"
+        ],
+        [
+          "Calcola il totale degli ordini del 2024",
+          "SELECT YEAR(data_ordine) as anno, MONTH(data_ordine) as mese, COUNT(*) as totale_ordini FROM ordini WHERE YEAR(data_ordine) = 2024 GROUP BY YEAR(data_ordine), MONTH(data_ordine);"
+        ],
+        [
+          "Trova tutti i prodotti sotto i 50 euro",
+          "SELECT * FROM prodotti WHERE prezzo < 50;"
+        ]
+      ]
+    }
+  },
+  "timestamp": "2025-08-21 10:58:54"
+}

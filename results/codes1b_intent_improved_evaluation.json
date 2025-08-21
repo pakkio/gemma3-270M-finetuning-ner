@@ -1,0 +1,91 @@
+{
+  "model_name": "codes1b-intent-improved",
+  "accuracy": 1.0,
+  "precision": 1.0,
+  "recall": 1.0,
+  "f1": 1.0,
+  "avg_inference_time": 2.211939255396525,
+  "total_examples": 12,
+  "correct_predictions": 12,
+  "training_improvements": [
+    "8x larger dataset (960 vs 120 examples)",
+    "Increased learning rate (5e-4 vs 2e-4)",
+    "Larger LoRA parameters (r=32 vs 16)",
+    "More epochs (8 vs 5)",
+    "Larger batch size (8 vs 4)",
+    "Cosine learning rate scheduler",
+    "Extended early stopping patience"
+  ],
+  "comparison": {
+    "original_accuracy": 0.25,
+    "improved_accuracy": 1.0,
+    "accuracy_improvement": 0.75,
+    "relative_improvement_percent": 300.0,
+    "original_f1": 0.182,
+    "improved_f1": 1.0,
+    "f1_improvement": 0.8180000000000001
+  },
+  "predictions": [
+    [
+      "Non riesco ad accedere al mio account",
+      "account_access",
+      "account_access"
+    ],
+    [
+      "Voglio cancellare il mio ordine",
+      "order_cancellation",
+      "order_cancellation"
+    ],
+    [
+      "Dove è il mio pacco?",
+      "order_tracking",
+      "order_tracking"
+    ],
+    [
+      "Voglio restituire questo prodotto",
+      "return_refund",
+      "return_refund"
+    ],
+    [
+      "La carta non funziona",
+      "payment_issues",
+      "payment_issues"
+    ],
+    [
+      "Quanto costa la spedizione?",
+      "shipping_info",
+      "shipping_info"
+    ],
+    [
+      "È disponibile in magazzino?",
+      "product_availability",
+      "product_availability"
+    ],
+    [
+      "Caratteristiche del prodotto",
+      "product_info",
+      "product_info"
+    ],
+    [
+      "Ci sono sconti?",
+      "promotions_discounts",
+      "promotions_discounts"
+    ],
+    [
+      "Il sito non funziona",
+      "technical_support",
+      "technical_support"
+    ],
+    [
+      "Voglio cambiare la mia email",
+      "account_management",
+      "account_management"
+    ],
+    [
+      "Buongiorno, ho una domanda",
+      "general_inquiry",
+      "general_inquiry"
+    ]
+  ],
+  "timestamp": "2025-08-21 18:50:40"
+}

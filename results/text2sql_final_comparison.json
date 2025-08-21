@@ -1,0 +1,983 @@
+{
+  "evaluation_timestamp": "2025-08-21T10:56:54.940371",
+  "validation_examples": 51,
+  "models_compared": [
+    "codet5",
+    "gemma3"
+  ],
+  "metrics_comparison": {
+    "exact_match_accuracy": {
+      "codet5": 0.0,
+      "gemma3": 0.0
+    },
+    "syntax_validity_rate": {
+      "codet5": 1.0,
+      "gemma3": 1.0
+    },
+    "normalized_match_accuracy": {
+      "codet5": 0.0,
+      "gemma3": 0.0
+    },
+    "semantic_similarity_avg": {
+      "codet5": 0.569094304388422,
+      "gemma3": 0.41736694677871145
+    },
+    "evaluation_time_seconds": {
+      "codet5": 42.644094467163086,
+      "gemma3": 180.42161464691162
+    },
+    "examples_per_second": {
+      "codet5": 1.1959451979750948,
+      "gemma3": 0.2826712314919026
+    }
+  },
+  "detailed_results": {
+    "codet5": {
+      "model_name": "CodeT5",
+      "total_examples": 51,
+      "exact_match_accuracy": 0.0,
+      "syntax_validity_rate": 1.0,
+      "normalized_match_accuracy": 0.0,
+      "semantic_similarity_avg": 0.569094304388422,
+      "evaluation_time_seconds": 42.644094467163086,
+      "examples_per_second": 1.1959451979750948,
+      "detailed_results": [
+        {
+          "question": "Trova tutti i clienti di Firenze con ordini superiori a 200 euro",
+          "ground_truth": "SELECT DISTINCT c.* FROM clienti c JOIN ordini o ON c.id_cliente = o.id_cliente WHERE c.citta = 'Firenze' AND o.totale > 200;",
+          "prediction": "SELECT * FROM clienti WHERE ordini = 200;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B05ACD60>, <Whitespace ' ' at 0x7435B05AF8E0>, <Wildcard '*' at 0x7435B05ACC40>, <Whitespace ' ' at 0x7435B05AFF40>, <Keyword 'FROM' at 0x7435B05AFA60>, <Whitespace ' ' at 0x7435B05AFA00>, <Identifier 'clienti' at 0x7435936B2A50>, <Whitespace ' ' at 0x7435B05AF940>, <Where 'WHERE ...' at 0x7435936B37D0>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra il numero di prodotti per ogni fornitore",
+          "ground_truth": "SELECT fornitore, COUNT(*) as numero_prodotti FROM prodotti GROUP BY fornitore;",
+          "prediction": "SELECT * FROM prodotti WHERE data_prodotto >= DATE_SUB(CURDATE(), INTERVAL 1 DAY);",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B05AE0E0>, <Whitespace ' ' at 0x7435B331D120>, <Wildcard '*' at 0x7435B331F5E0>, <Whitespace ' ' at 0x7435B331F520>, <Keyword 'FROM' at 0x7435B331F460>, <Whitespace ' ' at 0x7435B331F2E0>, <Identifier 'prodot...' at 0x7435936BA350>, <Whitespace ' ' at 0x7435B331F1C0>, <Where 'WHERE ...' at 0x7435936BA0D0>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca le fatture non pagate scadute da più di 30 giorni",
+          "ground_truth": "SELECT * FROM fatture WHERE stato != 'pagata' AND data_scadenza < DATE_SUB(CURDATE(), INTERVAL 30 DAY);",
+          "prediction": "SELECT * FROM fatture WHERE pagate = 30;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B1105000>, <Whitespace ' ' at 0x7435B1107340>, <Wildcard '*' at 0x7435B11050C0>, <Whitespace ' ' at 0x7435B1106EC0>, <Keyword 'FROM' at 0x7435B1105240>, <Whitespace ' ' at 0x7435B11054E0>, <Identifier 'fatture' at 0x7435936B19D0>, <Whitespace ' ' at 0x7435B334C8E0>, <Where 'WHERE ...' at 0x7435B3313DD0>]",
+          "semantic_similarity": 0.8571428571428571,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i dipendenti del marketing con stipendio > 35000",
+          "ground_truth": "SELECT * FROM dipendenti WHERE dipartimento = 'marketing' AND stipendio > 35000;",
+          "prediction": "SELECT * FROM dipendenti WHERE marketing = 'stipendio';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B1187D00>, <Whitespace ' ' at 0x7435B11876A0>, <Wildcard '*' at 0x7435B1186380>, <Whitespace ' ' at 0x7435B1185D80>, <Keyword 'FROM' at 0x7435B11877C0>, <Whitespace ' ' at 0x7435B11879A0>, <Identifier 'dipend...' at 0x7435936BA650>, <Whitespace ' ' at 0x7435B34CE7A0>, <Where 'WHERE ...' at 0x7435936BA9D0>]",
+          "semantic_similarity": 0.8571428571428571,
+          "normalized_match": false
+        },
+        {
+          "question": "Quali sono i 3 clienti che hanno speso di più quest'anno?",
+          "ground_truth": "SELECT c.nome, c.cognome, SUM(o.totale) as spesa_totale FROM clienti c JOIN ordini o ON c.id_cliente = o.id_cliente WHERE YEAR(o.data_ordine) = YEAR(CURDATE()) GROUP BY c.id_cliente, c.nome, c.cognome ORDER BY spesa_totale DESC LIMIT 3;",
+          "prediction": "SELECT * FROM clienti WHERE data_speso >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH);",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B334E8C0>, <Whitespace ' ' at 0x7435B331C7C0>, <Wildcard '*' at 0x7435B331C520>, <Whitespace ' ' at 0x7435B331C340>, <Keyword 'FROM' at 0x7435B331C400>, <Whitespace ' ' at 0x7435B331FFA0>, <Identifier 'clienti' at 0x7435936E9450>, <Whitespace ' ' at 0x7435B331CF40>, <Where 'WHERE ...' at 0x7435B3319F50>]",
+          "semantic_similarity": 0.14285714285714285,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i prodotti della categoria abbigliamento con giacenza > 20",
+          "ground_truth": "SELECT * FROM prodotti WHERE categoria = 'abbigliamento' AND giacenza > 20;",
+          "prediction": "SELECT * FROM prodotti WHERE categoria = 'abbigliamento';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B334D540>, <Whitespace ' ' at 0x7435B334E380>, <Wildcard '*' at 0x7435B334C6A0>, <Whitespace ' ' at 0x7435B334D120>, <Keyword 'FROM' at 0x7435B334D780>, <Whitespace ' ' at 0x7435B334C640>, <Identifier 'prodot...' at 0x7435936EA1D0>, <Whitespace ' ' at 0x7435B334DFC0>, <Where 'WHERE ...' at 0x7435936BA5D0>]",
+          "semantic_similarity": 0.8571428571428571,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova gli ordini consegnati in Emilia-Romagna",
+          "ground_truth": "SELECT * FROM ordini WHERE regione_consegna = 'Emilia-Romagna';",
+          "prediction": "SELECT * FROM ordini WHERE consegnato = 'Emilia-Romagna';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B34CF760>, <Whitespace ' ' at 0x7435B331DC00>, <Wildcard '*' at 0x7435B331CBE0>, <Whitespace ' ' at 0x7435B331C5E0>, <Keyword 'FROM' at 0x7435B331FA60>, <Whitespace ' ' at 0x7435B331D1E0>, <Identifier 'ordini' at 0x7435936EA250>, <Whitespace ' ' at 0x7435B331C880>, <Where 'WHERE ...' at 0x7435936EBF50>]",
+          "semantic_similarity": 0.8571428571428571,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca i fornitori del settore tessile con partnership da meno di 2 anni",
+          "ground_truth": "SELECT * FROM fornitori WHERE settore = 'tessile' AND data_partnership > DATE_SUB(CURDATE(), INTERVAL 2 YEAR);",
+          "prediction": "SELECT * FROM fornitori WHERE settore = 'partnership';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B334C1C0>, <Whitespace ' ' at 0x7435B334D000>, <Wildcard '*' at 0x7435B334E3E0>, <Whitespace ' ' at 0x7435B334F520>, <Keyword 'FROM' at 0x7435B334E560>, <Whitespace ' ' at 0x7435B334CF40>, <Identifier 'fornit...' at 0x7435936F0A50>, <Whitespace ' ' at 0x7435B334F400>, <Where 'WHERE ...' at 0x7435B331BF50>]",
+          "semantic_similarity": 0.8571428571428571,
+          "normalized_match": false
+        },
+        {
+          "question": "Conta le recensioni per ogni valutazione",
+          "ground_truth": "SELECT valutazione, COUNT(*) as numero_recensioni FROM recensioni GROUP BY valutazione ORDER BY valutazione;",
+          "prediction": "SELECT * FROM recensioni WHERE valutazione = 'valutazione';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435936D7D00>, <Whitespace ' ' at 0x7435936D7AC0>, <Wildcard '*' at 0x7435936D7E80>, <Whitespace ' ' at 0x7435936D7EE0>, <Keyword 'FROM' at 0x7435936D7F40>, <Whitespace ' ' at 0x7435936D7E20>, <Identifier 'recens...' at 0x7435936BB950>, <Whitespace ' ' at 0x7435936D7BE0>, <Where 'WHERE ...' at 0x7435936BB250>]",
+          "semantic_similarity": 0.2857142857142857,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i clienti della Puglia che non hanno mai fatto ordini",
+          "ground_truth": "SELECT c.* FROM clienti c LEFT JOIN ordini o ON c.id_cliente = o.id_cliente WHERE c.regione = 'Puglia' AND o.id_cliente IS NULL;",
+          "prediction": "SELECT * FROM clienti WHERE data_ordini > DATE_SUB(CURDATE(), INTERVAL 1 DAY);",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B334F0A0>, <Whitespace ' ' at 0x7435B334D7E0>, <Wildcard '*' at 0x7435B334F760>, <Whitespace ' ' at 0x7435B334E620>, <Keyword 'FROM' at 0x7435B334CC40>, <Whitespace ' ' at 0x7435B334EB00>, <Identifier 'clienti' at 0x7435936F23D0>, <Whitespace ' ' at 0x7435B334D6C0>, <Where 'WHERE ...' at 0x7435936F17D0>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i prodotti con prezzo tra 50 e 150 euro ordinati per categoria",
+          "ground_truth": "SELECT * FROM prodotti WHERE prezzo BETWEEN 50 AND 150 ORDER BY categoria, prezzo;",
+          "prediction": "SELECT * FROM prodotti WHERE prezzo >= 50;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B11074C0>, <Whitespace ' ' at 0x7435B331CC40>, <Wildcard '*' at 0x7435B331C1C0>, <Whitespace ' ' at 0x7435B331D300>, <Keyword 'FROM' at 0x7435B331C640>, <Whitespace ' ' at 0x7435B331CBE0>, <Identifier 'prodot...' at 0x7435936F3D50>, <Whitespace ' ' at 0x7435B331FA60>, <Where 'WHERE ...' at 0x7435936BBB50>]",
+          "semantic_similarity": 0.7142857142857143,
+          "normalized_match": false
+        },
+        {
+          "question": "Quali dipendenti sono stati assunti nel 2023?",
+          "ground_truth": "SELECT * FROM dipendenti WHERE YEAR(data_assunzione) = 2023;",
+          "prediction": "SELECT * FROM dipendenti WHERE stato = 'assunti';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B1105DE0>, <Whitespace ' ' at 0x7435936D7760>, <Wildcard '*' at 0x7435936D6E00>, <Whitespace ' ' at 0x7435936D6800>, <Keyword 'FROM' at 0x7435936D74C0>, <Whitespace ' ' at 0x7435936D7040>, <Identifier 'dipend...' at 0x7435936F0850>, <Whitespace ' ' at 0x7435936D7520>, <Where 'WHERE ...' at 0x7435936F2E50>]",
+          "semantic_similarity": 0.8571428571428571,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra le promozioni attive con sconto percentuale > 15%",
+          "ground_truth": "SELECT * FROM promozioni WHERE stato = 'attiva' AND sconto_percentuale > 15 AND CURDATE() BETWEEN data_inizio AND data_fine;",
+          "prediction": "SELECT * FROM promozioni WHERE sconto > 15;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435936D7100>, <Whitespace ' ' at 0x7435936D6B00>, <Wildcard '*' at 0x7435936D6D40>, <Whitespace ' ' at 0x7435936D7340>, <Keyword 'FROM' at 0x7435936D7160>, <Whitespace ' ' at 0x7435936D75E0>, <Identifier 'promoz...' at 0x7435936F2CD0>, <Whitespace ' ' at 0x7435936D71C0>, <Where 'WHERE ...' at 0x7435936F30D0>]",
+          "semantic_similarity": 0.8571428571428571,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i movimenti di magazzino per danneggiamento",
+          "ground_truth": "SELECT * FROM magazzino WHERE motivo = 'danneggiamento';",
+          "prediction": "SELECT * FROM movimenti WHERE magazzino = 'danneggiamento';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B34CF160>, <Whitespace ' ' at 0x7435B331C640>, <Wildcard '*' at 0x7435936F8580>, <Whitespace ' ' at 0x7435936F85E0>, <Keyword 'FROM' at 0x7435936F8640>, <Whitespace ' ' at 0x7435936F86A0>, <Identifier 'movime...' at 0x7435903A02D0>, <Whitespace ' ' at 0x7435936F8760>, <Where 'WHERE ...' at 0x7435903A11D0>]",
+          "semantic_similarity": 0.7142857142857143,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca i clienti con email aziendale (.com o .it) ordinati per città",
+          "ground_truth": "SELECT * FROM clienti WHERE (email LIKE '%.com' OR email LIKE '%.it') ORDER BY citta;",
+          "prediction": "SELECT * FROM clienti WHERE email = 'aziendale';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B11074C0>, <Whitespace ' ' at 0x7435B331CC40>, <Wildcard '*' at 0x7435B331C1C0>, <Whitespace ' ' at 0x7435B331D300>, <Keyword 'FROM' at 0x7435B331CA00>, <Whitespace ' ' at 0x7435B331C100>, <Identifier 'clienti' at 0x7435936F3E50>, <Whitespace ' ' at 0x7435B331C940>, <Where 'WHERE ...' at 0x7435936BBAD0>]",
+          "semantic_similarity": 0.7142857142857143,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra il valore totale degli ordini per ogni metodo di pagamento",
+          "ground_truth": "SELECT metodo_pagamento, SUM(totale) as valore_totale FROM ordini GROUP BY metodo_pagamento ORDER BY valore_totale DESC;",
+          "prediction": "SELECT * FROM ordini WHERE data_pagamento > DATE_SUB(CURDATE(), INTERVAL 1 DAY);",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B05ADEA0>, <Whitespace ' ' at 0x7435936D7FA0>, <Wildcard '*' at 0x7435936F9E40>, <Whitespace ' ' at 0x7435936FA020>, <Keyword 'FROM' at 0x7435936FA080>, <Whitespace ' ' at 0x7435936FA2C0>, <Identifier 'ordini' at 0x7435903A12D0>, <Whitespace ' ' at 0x7435936F9D20>, <Where 'WHERE ...' at 0x7435903A0F50>]",
+          "semantic_similarity": 0.2857142857142857,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i prodotti mai recensiti",
+          "ground_truth": "SELECT p.* FROM prodotti p LEFT JOIN recensioni r ON p.id_prodotto = r.id_prodotto WHERE r.id_prodotto IS NULL;",
+          "prediction": "SELECT * FROM prodotti WHERE data_recensiti > DATE_SUB(CURDATE(), INTERVAL 1 DAY);",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B11877C0>, <Whitespace ' ' at 0x7435B11879A0>, <Wildcard '*' at 0x7435B34CF160>, <Whitespace ' ' at 0x7435B34CE5C0>, <Keyword 'FROM' at 0x7435B34CD720>, <Whitespace ' ' at 0x7435B34CD960>, <Identifier 'prodot...' at 0x7435903A14D0>, <Whitespace ' ' at 0x7435B34CE500>, <Where 'WHERE ...' at 0x7435903A1750>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Quali ordini hanno richiesto più di una settimana per la spedizione?",
+          "ground_truth": "SELECT * FROM ordini WHERE DATEDIFF(data_consegna, data_ordine) > 7 AND stato = 'consegnato';",
+          "prediction": "SELECT * FROM ordini WHERE data_spedizione >= DATE_SUB(CURDATE(), INTERVAL 1 DAY);",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435936D5B40>, <Whitespace ' ' at 0x7435936D5BA0>, <Wildcard '*' at 0x7435936D6080>, <Whitespace ' ' at 0x7435936D6260>, <Keyword 'FROM' at 0x7435936D62C0>, <Whitespace ' ' at 0x7435936D5CC0>, <Identifier 'ordini' at 0x7435936EA450>, <Whitespace ' ' at 0x7435936D5E40>, <Where 'WHERE ...' at 0x7435936F2A50>]",
+          "semantic_similarity": 0.8571428571428571,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i dipendenti senza dipendenti sotto di loro",
+          "ground_truth": "SELECT d1.* FROM dipendenti d1 LEFT JOIN dipendenti d2 ON d1.id_dipendente = d2.manager_id WHERE d2.manager_id IS NULL AND d1.stato = 'attivo';",
+          "prediction": "SELECT * FROM dipendenti WHERE data_dipendente > DATE_SUB(CURDATE(), INTERVAL 1 DAY);",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B11050C0>, <Whitespace ' ' at 0x7435B1107340>, <Wildcard '*' at 0x7435B1106EC0>, <Whitespace ' ' at 0x7435B1105240>, <Keyword 'FROM' at 0x7435B11054E0>, <Whitespace ' ' at 0x7435B1105DE0>, <Identifier 'dipend...' at 0x7435936BBE50>, <Whitespace ' ' at 0x7435B11053C0>, <Where 'WHERE ...' at 0x7435936BA8D0>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova le fatture emesse nell'ultimo trimestre",
+          "ground_truth": "SELECT * FROM fatture WHERE data_emissione >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH);",
+          "prediction": "SELECT * FROM fatture WHERE emesse = 'trimestre';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435936D6020>, <Whitespace ' ' at 0x7435936D4580>, <Wildcard '*' at 0x7435936D5300>, <Whitespace ' ' at 0x7435936D4EE0>, <Keyword 'FROM' at 0x7435936D5660>, <Whitespace ' ' at 0x7435936D65C0>, <Identifier 'fatture' at 0x7435B05EE950>, <Whitespace ' ' at 0x7435936D4C40>, <Where 'WHERE ...' at 0x7435936B26D0>]",
+          "semantic_similarity": 0.8571428571428571,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca i clienti che hanno fatto ordini sia a Milano che a Roma",
+          "ground_truth": "SELECT DISTINCT c.* FROM clienti c JOIN ordini o1 ON c.id_cliente = o1.id_cliente JOIN ordini o2 ON c.id_cliente = o2.id_cliente WHERE o1.citta_consegna = 'Milano' AND o2.citta_consegna = 'Roma';",
+          "prediction": "SELECT * FROM clienti WHERE ordini = 'Milano che a Roma';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435936D5840>, <Whitespace ' ' at 0x7435B334E380>, <Wildcard '*' at 0x7435B334D120>, <Whitespace ' ' at 0x7435B334D780>, <Keyword 'FROM' at 0x7435B334C6A0>, <Whitespace ' ' at 0x7435B334D9C0>, <Identifier 'clienti' at 0x7435903AC9D0>, <Whitespace ' ' at 0x7435B334D540>, <Where 'WHERE ...' at 0x7435936BA350>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i prodotti con il margine più alto",
+          "ground_truth": "SELECT *, ((prezzo - costo) / costo * 100) as margine FROM prodotti WHERE costo > 0 ORDER BY margine DESC LIMIT 10;",
+          "prediction": "SELECT * FROM prodotti WHERE margine = 'alto';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B334F160>, <Whitespace ' ' at 0x7435B334D7E0>, <Wildcard '*' at 0x7435B334DDE0>, <Whitespace ' ' at 0x7435B334EF20>, <Keyword 'FROM' at 0x7435B334D420>, <Whitespace ' ' at 0x7435B334C580>, <Identifier 'prodot...' at 0x7435936EA5D0>, <Whitespace ' ' at 0x7435B334D2A0>, <Where 'WHERE ...' at 0x7435936EB2D0>]",
+          "semantic_similarity": 0.6428571428571429,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i fornitori con rating medio superiore a 4.5",
+          "ground_truth": "SELECT * FROM fornitori WHERE valutazione > 4.5;",
+          "prediction": "SELECT * FROM fornitori WHERE rating > 4.5;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435936D74C0>, <Whitespace ' ' at 0x7435936D5120>, <Wildcard '*' at 0x7435936D4940>, <Whitespace ' ' at 0x7435936D51E0>, <Keyword 'FROM' at 0x7435936D5C00>, <Whitespace ' ' at 0x7435936D5C60>, <Identifier 'fornit...' at 0x7435936E9450>, <Whitespace ' ' at 0x7435936D5240>, <Where 'WHERE ...' at 0x7435936EAF50>]",
+          "semantic_similarity": 0.8571428571428571,
+          "normalized_match": false
+        },
+        {
+          "question": "Quali clienti hanno fatto ordini in tutti i mesi del 2024?",
+          "ground_truth": "SELECT c.nome, c.cognome FROM clienti c JOIN ordini o ON c.id_cliente = o.id_cliente WHERE YEAR(o.data_ordine) = 2024 GROUP BY c.id_cliente, c.nome, c.cognome HAVING COUNT(DISTINCT MONTH(o.data_ordine)) = 12;",
+          "prediction": "SELECT * FROM ordini WHERE data_ordini BETWEEN 2024 AND 2024;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435936D46A0>, <Whitespace ' ' at 0x7435936D79A0>, <Wildcard '*' at 0x7435936D5A20>, <Whitespace ' ' at 0x7435B334D1E0>, <Keyword 'FROM' at 0x7435B334DD20>, <Whitespace ' ' at 0x7435B334ED40>, <Identifier 'ordini' at 0x7435903BC0D0>, <Whitespace ' ' at 0x7435B334C280>, <Where 'WHERE ...' at 0x7435936F1A50>]",
+          "semantic_similarity": 0.14285714285714285,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i dipendenti con lo stipendio più alto per dipartimento",
+          "ground_truth": "SELECT d1.* FROM dipendenti d1 WHERE d1.stipendio = (SELECT MAX(d2.stipendio) FROM dipendenti d2 WHERE d2.dipartimento = d1.dipartimento);",
+          "prediction": "SELECT * FROM dipendenti WHERE stipendo > DATE_SUB(CURDATE(), INTERVAL 1 DAY);",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B05AF3A0>, <Whitespace ' ' at 0x7435B05AF2E0>, <Wildcard '*' at 0x7435B05AF340>, <Whitespace ' ' at 0x7435B05AF220>, <Keyword 'FROM' at 0x7435B05AF1C0>, <Whitespace ' ' at 0x7435B05ACD60>, <Identifier 'dipend...' at 0x7435903BFAD0>, <Whitespace ' ' at 0x7435B05AF280>, <Where 'WHERE ...' at 0x7435903BC6D0>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova gli ordini con almeno 5 prodotti diversi",
+          "ground_truth": "SELECT o.* FROM ordini o JOIN dettagli_ordine d ON o.id_ordine = d.id_ordine GROUP BY o.id_ordine HAVING COUNT(DISTINCT d.id_prodotto) >= 5;",
+          "prediction": "SELECT * FROM ordini WHERE almeno = 5;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435903C7FA0>, <Whitespace ' ' at 0x7435903C6F80>, <Wildcard '*' at 0x7435903C6F20>, <Whitespace ' ' at 0x7435903C6FE0>, <Keyword 'FROM' at 0x7435903C7820>, <Whitespace ' ' at 0x7435903C7880>, <Identifier 'ordini' at 0x7435903BFED0>, <Whitespace ' ' at 0x7435903C7B80>, <Where 'WHERE ...' at 0x7435903BD9D0>]",
+          "semantic_similarity": 0.2857142857142857,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca i prodotti della categoria elettronica esauriti",
+          "ground_truth": "SELECT * FROM prodotti WHERE categoria = 'elettronica' AND (stato = 'esaurito' OR giacenza = 0);",
+          "prediction": "SELECT * FROM prodotti WHERE categoria = 'elettronica';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B05AF640>, <Whitespace ' ' at 0x7435936D49A0>, <Wildcard '*' at 0x7435936D7760>, <Whitespace ' ' at 0x7435936D4040>, <Keyword 'FROM' at 0x7435936D7DC0>, <Whitespace ' ' at 0x7435936D5960>, <Identifier 'prodot...' at 0x7435903D0450>, <Whitespace ' ' at 0x7435936D4700>, <Where 'WHERE ...' at 0x7435903BD8D0>]",
+          "semantic_similarity": 0.8571428571428571,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra le recensioni negative con commento lungo",
+          "ground_truth": "SELECT * FROM recensioni WHERE valutazione <= 2 AND LENGTH(commento) > 100;",
+          "prediction": "SELECT * FROM recensioni WHERE commento = 'lungo';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B11070A0>, <Whitespace ' ' at 0x7435903C75E0>, <Wildcard '*' at 0x7435903C7700>, <Whitespace ' ' at 0x7435903C7100>, <Keyword 'FROM' at 0x7435903C7E20>, <Whitespace ' ' at 0x7435903C73A0>, <Identifier 'recens...' at 0x7435903D2E50>, <Whitespace ' ' at 0x7435903C7280>, <Where 'WHERE ...' at 0x7435903D1CD0>]",
+          "semantic_similarity": 0.8571428571428571,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i clienti che hanno fatto il primo ordine nell'ultimo mese",
+          "ground_truth": "SELECT c.* FROM clienti c JOIN ordini o ON c.id_cliente = o.id_cliente WHERE o.data_ordine >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND o.data_ordine = (SELECT MIN(o2.data_ordine) FROM ordini o2 WHERE o2.id_cliente = c.id_cliente);",
+          "prediction": "SELECT * FROM clienti WHERE data_ordine > DATE_SUB(CURDATE(), INTERVAL 1 DAY);",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B334FC40>, <Whitespace ' ' at 0x7435B334E620>, <Wildcard '*' at 0x7435B334DBA0>, <Whitespace ' ' at 0x7435B334CC40>, <Keyword 'FROM' at 0x7435B334D900>, <Whitespace ' ' at 0x7435B334F8E0>, <Identifier 'clienti' at 0x7435903D0C50>, <Whitespace ' ' at 0x7435903C6260>, <Where 'WHERE ...' at 0x7435903D0ED0>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Quali sono i prodotti più costosi per ogni categoria?",
+          "ground_truth": "SELECT p1.* FROM prodotti p1 WHERE p1.prezzo = (SELECT MAX(p2.prezzo) FROM prodotti p2 WHERE p2.categoria = p1.categoria);",
+          "prediction": "SELECT * FROM prodotti WHERE categoria = 'categoria';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B05AF640>, <Whitespace ' ' at 0x7435936D71C0>, <Wildcard '*' at 0x7435936D7400>, <Whitespace ' ' at 0x7435936D7040>, <Keyword 'FROM' at 0x7435936D7E80>, <Whitespace ' ' at 0x7435936D4D00>, <Identifier 'prodot...' at 0x7435903BD8D0>, <Whitespace ' ' at 0x7435936D4040>, <Where 'WHERE ...' at 0x7435903D3ED0>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i dipendenti che lavorano nella stessa città dei clienti",
+          "ground_truth": "SELECT DISTINCT d.* FROM dipendenti d JOIN clienti c ON d.citta = c.citta;",
+          "prediction": "SELECT * FROM dipendenti WHERE stessa = 'città';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435903C6380>, <Whitespace ' ' at 0x7435903C63E0>, <Wildcard '*' at 0x7435903C6740>, <Whitespace ' ' at 0x7435903C64A0>, <Keyword 'FROM' at 0x7435903C6440>, <Whitespace ' ' at 0x7435903C60E0>, <Identifier 'dipend...' at 0x7435903E02D0>, <Whitespace ' ' at 0x7435903C7EE0>, <Where 'WHERE ...' at 0x7435903BC650>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova le promozioni scadute negli ultimi 30 giorni",
+          "ground_truth": "SELECT * FROM promozioni WHERE data_fine BETWEEN DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND CURDATE();",
+          "prediction": "SELECT * FROM promozioni WHERE scadute = 'negli';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435903DF6A0>, <Whitespace ' ' at 0x7435903DE9E0>, <Wildcard '*' at 0x7435903DE800>, <Whitespace ' ' at 0x7435903DE860>, <Keyword 'FROM' at 0x7435903DE200>, <Whitespace ' ' at 0x7435903DC0A0>, <Identifier 'promoz...' at 0x7435903E0650>, <Whitespace ' ' at 0x7435903DC340>, <Where 'WHERE ...' at 0x7435903E0F50>]",
+          "semantic_similarity": 0.8571428571428571,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca i clienti con più di 3 ordini annullati",
+          "ground_truth": "SELECT c.nome, c.cognome, COUNT(o.id_ordine) as ordini_annullati FROM clienti c JOIN ordini o ON c.id_cliente = o.id_cliente WHERE o.stato = 'annullato' GROUP BY c.id_cliente, c.nome, c.cognome HAVING COUNT(o.id_ordine) > 3;",
+          "prediction": "SELECT * FROM clienti WHERE ordini = 3;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435936FB8E0>, <Whitespace ' ' at 0x7435936F8700>, <Wildcard '*' at 0x7435936F8A00>, <Whitespace ' ' at 0x7435936F87C0>, <Keyword 'FROM' at 0x7435936F8B20>, <Whitespace ' ' at 0x7435936F9240>, <Identifier 'clienti' at 0x7435903E3E50>, <Whitespace ' ' at 0x7435936F8940>, <Where 'WHERE ...' at 0x7435903E01D0>]",
+          "semantic_similarity": 0.2857142857142857,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra il trend mensile delle vendite per la categoria sport",
+          "ground_truth": "SELECT MONTH(o.data_ordine) as mese, SUM(d.subtotale) as vendite FROM ordini o JOIN dettagli_ordine d ON o.id_ordine = d.id_ordine JOIN prodotti p ON d.id_prodotto = p.id_prodotto WHERE p.categoria = 'sport' AND YEAR(o.data_ordine) = YEAR(CURDATE()) GROUP BY MONTH(o.data_ordine) ORDER BY mese;",
+          "prediction": "SELECT * FROM trend WHERE categoria = 'sport';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B05AF040>, <Whitespace ' ' at 0x7435B05AE3E0>, <Wildcard '*' at 0x7435B05AF0A0>, <Whitespace ' ' at 0x7435B05AE9E0>, <Keyword 'FROM' at 0x7435B05AD3C0>, <Whitespace ' ' at 0x7435B05AD120>, <Identifier 'trend' at 0x7435903E1050>, <Whitespace ' ' at 0x7435B05AD8A0>, <Where 'WHERE ...' at 0x7435903D0CD0>]",
+          "semantic_similarity": 0.0,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i fornitori che forniscono prodotti in più categorie",
+          "ground_truth": "SELECT fornitore, COUNT(DISTINCT categoria) as categorie FROM prodotti GROUP BY fornitore HAVING COUNT(DISTINCT categoria) > 1;",
+          "prediction": "SELECT * FROM fornitori WHERE categorie = 'prodotti';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B334D9C0>, <Whitespace ' ' at 0x7435B334F4C0>, <Wildcard '*' at 0x7435B334E8C0>, <Whitespace ' ' at 0x7435B334C280>, <Keyword 'FROM' at 0x7435B334E140>, <Whitespace ' ' at 0x7435B334E6E0>, <Identifier 'fornit...' at 0x7435903E3ED0>, <Whitespace ' ' at 0x7435B334DFC0>, <Where 'WHERE ...' at 0x7435903E1750>]",
+          "semantic_similarity": 0.2857142857142857,
+          "normalized_match": false
+        },
+        {
+          "question": "Quali ordini hanno un valore unitario medio superiore a 100 euro?",
+          "ground_truth": "SELECT o.*, AVG(d.prezzo_unitario) as prezzo_medio FROM ordini o JOIN dettagli_ordine d ON o.id_ordine = d.id_ordine GROUP BY o.id_ordine HAVING AVG(d.prezzo_unitario) > 100;",
+          "prediction": "SELECT * FROM ordini WHERE valore >= 100;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B334D6C0>, <Whitespace ' ' at 0x7435936F80A0>, <Wildcard '*' at 0x7435936F84C0>, <Whitespace ' ' at 0x7435936F8AC0>, <Keyword 'FROM' at 0x7435936F8F40>, <Whitespace ' ' at 0x7435936F93C0>, <Identifier 'ordini' at 0x7435903BE0D0>, <Whitespace ' ' at 0x7435936FA0E0>, <Where 'WHERE ...' at 0x7435903BF250>]",
+          "semantic_similarity": 0.2857142857142857,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i clienti che hanno cambiato regione di consegna",
+          "ground_truth": "SELECT DISTINCT c.* FROM clienti c JOIN ordini o ON c.id_cliente = o.id_cliente WHERE c.regione != o.regione_consegna;",
+          "prediction": "SELECT * FROM clienti WHERE data_consegna = DATE_SUB(CURDATE(), INTERVAL 1 DAY);",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B05AE4A0>, <Whitespace ' ' at 0x7435B05ACFA0>, <Wildcard '*' at 0x7435B05AEBC0>, <Whitespace ' ' at 0x7435B05AE380>, <Keyword 'FROM' at 0x7435B05AF4C0>, <Whitespace ' ' at 0x7435B05AE1A0>, <Identifier 'clienti' at 0x7435903E0FD0>, <Whitespace ' ' at 0x7435B05AF940>, <Where 'WHERE ...' at 0x7435903BEA50>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i dipendenti con anzianità aziendale superiore a 5 anni",
+          "ground_truth": "SELECT *, DATEDIFF(CURDATE(), data_assunzione) / 365 as anni_servizio FROM dipendenti WHERE DATEDIFF(CURDATE(), data_assunzione) / 365 > 5;",
+          "prediction": "SELECT * FROM dipendenti WHERE anzianità = 'aziendale';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B11053C0>, <Whitespace ' ' at 0x7435B334C9A0>, <Wildcard '*' at 0x7435B334E980>, <Whitespace ' ' at 0x7435B334CD00>, <Keyword 'FROM' at 0x7435B334D600>, <Whitespace ' ' at 0x7435B334F520>, <Identifier 'dipend...' at 0x7435903BDC50>, <Whitespace ' ' at 0x7435B334F400>, <Where 'WHERE ...' at 0x7435B34B3E50>]",
+          "semantic_similarity": 0.7619047619047619,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca le fatture con IVA calcolata incorrettamente (IVA ≠ 22% dell'imponibile)",
+          "ground_truth": "SELECT *, (importo_totale - iva) as imponibile, ((importo_totale - iva) * 0.22) as iva_corretta FROM fatture WHERE ABS(iva - ((importo_totale - iva) * 0.22)) > 0.01;",
+          "prediction": "SELECT * FROM fatture WHERE data_incorrettamente > 22;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B05ACD60>, <Whitespace ' ' at 0x7435B05AD600>, <Wildcard '*' at 0x7435B05AF160>, <Whitespace ' ' at 0x7435936F8520>, <Keyword 'FROM' at 0x7435936F8EE0>, <Whitespace ' ' at 0x7435936F92A0>, <Identifier 'fatture' at 0x7435903A16D0>, <Whitespace ' ' at 0x7435936FBEE0>, <Where 'WHERE ...' at 0x7435936F1850>]",
+          "semantic_similarity": 0.7619047619047619,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i prodotti con giacenza critica (< 5) ordinati per categoria",
+          "ground_truth": "SELECT * FROM prodotti WHERE giacenza < 5 AND stato = 'disponibile' ORDER BY categoria, giacenza;",
+          "prediction": "SELECT * FROM prodotti WHERE giacenza = 5;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B334C8E0>, <Whitespace ' ' at 0x7435B334D2A0>, <Wildcard '*' at 0x7435B334D420>, <Whitespace ' ' at 0x7435B334FB20>, <Keyword 'FROM' at 0x7435B334E1A0>, <Whitespace ' ' at 0x7435B334F160>, <Identifier 'prodot...' at 0x7435903AEC50>, <Whitespace ' ' at 0x7435B334F640>, <Where 'WHERE ...' at 0x7435903BE750>]",
+          "semantic_similarity": 0.7142857142857143,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i clienti VIP (spesa totale > 10000 euro)",
+          "ground_truth": "SELECT c.nome, c.cognome, SUM(o.totale) as spesa_totale FROM clienti c JOIN ordini o ON c.id_cliente = o.id_cliente GROUP BY c.id_cliente, c.nome, c.cognome HAVING SUM(o.totale) > 10000 ORDER BY spesa_totale DESC;",
+          "prediction": "SELECT * FROM clienti WHERE spesa > 10000;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435936F8580>, <Whitespace ' ' at 0x7435936D6E60>, <Wildcard '*' at 0x7435936D58A0>, <Whitespace ' ' at 0x7435936D43A0>, <Keyword 'FROM' at 0x7435936D6B60>, <Whitespace ' ' at 0x7435936D7820>, <Identifier 'clienti' at 0x7435903A10D0>, <Whitespace ' ' at 0x7435936D5780>, <Where 'WHERE ...' at 0x7435936EAD50>]",
+          "semantic_similarity": 0.14285714285714285,
+          "normalized_match": false
+        },
+        {
+          "question": "Quali ordini hanno prodotti di categorie diverse?",
+          "ground_truth": "SELECT o.* FROM ordini o JOIN dettagli_ordine d ON o.id_ordine = d.id_ordine JOIN prodotti p ON d.id_prodotto = p.id_prodotto GROUP BY o.id_ordine HAVING COUNT(DISTINCT p.categoria) > 1;",
+          "prediction": "SELECT * FROM ordini WHERE categorie = 'prodotti';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435936D6CE0>, <Whitespace ' ' at 0x7435936D5360>, <Wildcard '*' at 0x7435936D44C0>, <Whitespace ' ' at 0x7435936D7520>, <Keyword 'FROM' at 0x7435936D47C0>, <Whitespace ' ' at 0x7435936D7E20>, <Identifier 'ordini' at 0x7435903E3350>, <Whitespace ' ' at 0x7435936D7040>, <Where 'WHERE ...' at 0x7435903BFF50>]",
+          "semantic_similarity": 0.2857142857142857,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra la distribuzione geografica dei clienti per regione",
+          "ground_truth": "SELECT regione, COUNT(*) as numero_clienti FROM clienti GROUP BY regione ORDER BY numero_clienti DESC;",
+          "prediction": "SELECT * FROM distribuzione WHERE cliente = 'clienti';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435936FA260>, <Whitespace ' ' at 0x7435936F8FA0>, <Wildcard '*' at 0x7435936F8280>, <Whitespace ' ' at 0x7435936F88E0>, <Keyword 'FROM' at 0x7435936F8DC0>, <Whitespace ' ' at 0x7435936FBFA0>, <Identifier 'distri...' at 0x7435903EB6D0>, <Whitespace ' ' at 0x7435936F81C0>, <Where 'WHERE ...' at 0x7435903EBE50>]",
+          "semantic_similarity": 0.14285714285714285,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i prodotti con recensioni contrastanti (sia 1 che 5 stelle)",
+          "ground_truth": "SELECT DISTINCT p.* FROM prodotti p JOIN recensioni r1 ON p.id_prodotto = r1.id_prodotto JOIN recensioni r2 ON p.id_prodotto = r2.id_prodotto WHERE r1.valutazione = 1 AND r2.valutazione = 5;",
+          "prediction": "SELECT * FROM prodotti WHERE recensione = 5;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B334F700>, <Whitespace ' ' at 0x7435903DF2E0>, <Wildcard '*' at 0x7435903DED40>, <Whitespace ' ' at 0x7435903DCCA0>, <Keyword 'FROM' at 0x7435903DE260>, <Whitespace ' ' at 0x7435903DE560>, <Identifier 'prodot...' at 0x7435903F8950>, <Whitespace ' ' at 0x7435903DCC40>, <Where 'WHERE ...' at 0x7435903F85D0>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca i dipendenti che guadagnano sopra la media del loro dipartimento",
+          "ground_truth": "SELECT d1.* FROM dipendenti d1 WHERE d1.stipendio > (SELECT AVG(d2.stipendio) FROM dipendenti d2 WHERE d2.dipartimento = d1.dipartimento);",
+          "prediction": "SELECT * FROM dipendenti WHERE data_dipendente >= DATE_SUB(CURDATE(), INTERVAL 1 DAY);",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435936D7B20>, <Whitespace ' ' at 0x7435936D4AC0>, <Wildcard '*' at 0x7435936D6980>, <Whitespace ' ' at 0x7435936D5A20>, <Keyword 'FROM' at 0x7435936D74C0>, <Whitespace ' ' at 0x7435936D5120>, <Identifier 'dipend...' at 0x7435903F9FD0>, <Whitespace ' ' at 0x7435936D4460>, <Where 'WHERE ...' at 0x7435903F8850>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra gli ordini con tempo di consegna record (≤ 2 giorni)",
+          "ground_truth": "SELECT * FROM ordini WHERE DATEDIFF(data_consegna, data_ordine) <= 2 AND stato = 'consegnato';",
+          "prediction": "SELECT * FROM ordini WHERE tempo = 'consegna';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435903DFB20>, <Whitespace ' ' at 0x7435903DCB20>, <Wildcard '*' at 0x7435903DEBC0>, <Whitespace ' ' at 0x7435903DF760>, <Keyword 'FROM' at 0x7435903DEE00>, <Whitespace ' ' at 0x7435903DEA40>, <Identifier 'ordini' at 0x7435903FB150>, <Whitespace ' ' at 0x7435903DF460>, <Where 'WHERE ...' at 0x7435903A0FD0>]",
+          "semantic_similarity": 0.8571428571428571,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i fornitori che non hanno prodotti attivi nel catalogo",
+          "ground_truth": "SELECT DISTINCT f.* FROM fornitori f LEFT JOIN prodotti p ON f.nome_azienda = p.fornitore WHERE p.fornitore IS NULL OR p.stato != 'disponibile';",
+          "prediction": "SELECT * FROM fornitori WHERE catalogo = 'catalogo';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435903DE7A0>, <Whitespace ' ' at 0x7435B334D540>, <Wildcard '*' at 0x7435B334E4A0>, <Whitespace ' ' at 0x7435936D6EC0>, <Keyword 'FROM' at 0x7435936D7760>, <Whitespace ' ' at 0x7435936D5180>, <Identifier 'fornit...' at 0x7435903F9850>, <Whitespace ' ' at 0x7435936D72E0>, <Where 'WHERE ...' at 0x7435903FA250>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Quali clienti hanno fatto ordini consecutivi nell'ultima settimana?",
+          "ground_truth": "SELECT c.nome, c.cognome, COUNT(o.id_ordine) as ordini_settimana FROM clienti c JOIN ordini o ON c.id_cliente = o.id_cliente WHERE o.data_ordine >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) GROUP BY c.id_cliente, c.nome, c.cognome HAVING COUNT(o.id_ordine) > 1;",
+          "prediction": "SELECT * FROM ordini WHERE settimana = 'settimana';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435936D4F40>, <Whitespace ' ' at 0x7435B334CF40>, <Wildcard '*' at 0x7435B334C820>, <Whitespace ' ' at 0x7435B334EA40>, <Keyword 'FROM' at 0x7435B334EC80>, <Whitespace ' ' at 0x7435B334C760>, <Identifier 'ordini' at 0x7435903FA050>, <Whitespace ' ' at 0x7435B334FC40>, <Where 'WHERE ...' at 0x7435903FA750>]",
+          "semantic_similarity": 0.14285714285714285,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i prodotti con il rapporto qualità-prezzo migliore",
+          "ground_truth": "SELECT p.*, AVG(r.valutazione) as valutazione_media, (AVG(r.valutazione) / p.prezzo * 100) as rapporto_qp FROM prodotti p JOIN recensioni r ON p.id_prodotto = r.id_prodotto GROUP BY p.id_prodotto ORDER BY rapporto_qp DESC LIMIT 10;",
+          "prediction": "SELECT * FROM prodotti WHERE data_prezzo > DATE_SUB(CURDATE(), INTERVAL 1 DAY);",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435B11877C0>, <Whitespace ' ' at 0x7435B11879A0>, <Wildcard '*' at 0x7435903DD120>, <Whitespace ' ' at 0x7435903DF160>, <Keyword 'FROM' at 0x7435903DC6A0>, <Whitespace ' ' at 0x7435903DC1C0>, <Identifier 'prodot...' at 0x7435903FA4D0>, <Whitespace ' ' at 0x7435903DE920>, <Where 'WHERE ...' at 0x7435903FA1D0>]",
+          "semantic_similarity": 0.14285714285714285,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova le fatture emesse e pagate nello stesso giorno",
+          "ground_truth": "SELECT * FROM fatture WHERE data_emissione = data_pagamento;",
+          "prediction": "SELECT * FROM fatture WHERE emesse = 'pagate';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435903DDA20>, <Whitespace ' ' at 0x7435903DC520>, <Wildcard '*' at 0x7435903DC580>, <Whitespace ' ' at 0x7435903DD600>, <Keyword 'FROM' at 0x7435903DE020>, <Whitespace ' ' at 0x7435903DF9A0>, <Identifier 'fatture' at 0x7435936EA650>, <Whitespace ' ' at 0x7435903DD000>, <Where 'WHERE ...' at 0x7435936BA2D0>]",
+          "semantic_similarity": 0.8571428571428571,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca i movimenti di magazzino anomali (grandi quantità)",
+          "ground_truth": "SELECT * FROM magazzino WHERE ABS(quantita) > 100 ORDER BY data_movimento DESC;",
+          "prediction": "SELECT * FROM movimenti WHERE magazzino = 'anomali';",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7435903DEDA0>, <Whitespace ' ' at 0x7435903DDD20>, <Wildcard '*' at 0x7435903DF640>, <Whitespace ' ' at 0x7435903DC160>, <Keyword 'FROM' at 0x7435903DC3A0>, <Whitespace ' ' at 0x7435903DE7A0>, <Identifier 'movime...' at 0x7435903EA050>, <Whitespace ' ' at 0x7435903DF760>, <Where 'WHERE ...' at 0x7435903E9FD0>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        }
+      ]
+    },
+    "gemma3": {
+      "model_name": "Gemma3",
+      "total_examples": 51,
+      "exact_match_accuracy": 0.0,
+      "syntax_validity_rate": 1.0,
+      "normalized_match_accuracy": 0.0,
+      "semantic_similarity_avg": 0.41736694677871145,
+      "evaluation_time_seconds": 180.42161464691162,
+      "examples_per_second": 0.2826712314919026,
+      "detailed_results": [
+        {
+          "question": "Trova tutti i clienti di Firenze con ordini superiori a 200 euro",
+          "ground_truth": "SELECT DISTINCT c.* FROM clienti c JOIN ordini o ON c.id_cliente = o.id_cliente WHERE c.citta = 'Firenze' AND o.totale > 200;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE29D5832E0>, <Whitespace ' ' at 0x7BE29D582440>, <Integer '1' at 0x7BE27D5A9720>, <Punctuation ';' at 0x7BE27CBF52A0>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra il numero di prodotti per ogni fornitore",
+          "ground_truth": "SELECT fornitore, COUNT(*) as numero_prodotti FROM prodotti GROUP BY fornitore;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE27C50C8E0>, <Whitespace ' ' at 0x7BE27CE30880>, <Integer '1' at 0x7BE27CE32380>, <Punctuation ';' at 0x7BE27CE303A0>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca le fatture non pagate scadute da più di 30 giorni",
+          "ground_truth": "SELECT * FROM fatture WHERE stato != 'pagata' AND data_scadenza < DATE_SUB(CURDATE(), INTERVAL 30 DAY);",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE27CF43B20>, <Whitespace ' ' at 0x7BE27CBF4D60>, <Integer '1' at 0x7BE27D076FE0>, <Punctuation ';' at 0x7BE27D074D00>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i dipendenti del marketing con stipendio > 35000",
+          "ground_truth": "SELECT * FROM dipendenti WHERE dipartimento = 'marketing' AND stipendio > 35000;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE27D0F4EE0>, <Whitespace ' ' at 0x7BE27CBF5AE0>, <Integer '1' at 0x7BE27CBF7580>, <Punctuation ';' at 0x7BE27CBF4C40>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Quali sono i 3 clienti che hanno speso di più quest'anno?",
+          "ground_truth": "SELECT c.nome, c.cognome, SUM(o.totale) as spesa_totale FROM clienti c JOIN ordini o ON c.id_cliente = o.id_cliente WHERE YEAR(o.data_ordine) = YEAR(CURDATE()) GROUP BY c.id_cliente, c.nome, c.cognome ORDER BY spesa_totale DESC LIMIT 3;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE27D20C4C0>, <Whitespace ' ' at 0x7BE27D20D4E0>, <Integer '1' at 0x7BE27D20F160>, <Punctuation ';' at 0x7BE27D20E4A0>]",
+          "semantic_similarity": 0.0,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i prodotti della categoria abbigliamento con giacenza > 20",
+          "ground_truth": "SELECT * FROM prodotti WHERE categoria = 'abbigliamento' AND giacenza > 20;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE27D33F160>, <Whitespace ' ' at 0x7BE27D33CB80>, <Integer '1' at 0x7BE27D33FA60>, <Punctuation ';' at 0x7BE27D33CFA0>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova gli ordini consegnati in Emilia-Romagna",
+          "ground_truth": "SELECT * FROM ordini WHERE regione_consegna = 'Emilia-Romagna';",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE27514FFA0>, <Whitespace ' ' at 0x7BE2D5352740>, <Integer '1' at 0x7BE2D5352C80>, <Punctuation ';' at 0x7BE27D33ED40>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca i fornitori del settore tessile con partnership da meno di 2 anni",
+          "ground_truth": "SELECT * FROM fornitori WHERE settore = 'tessile' AND data_partnership > DATE_SUB(CURDATE(), INTERVAL 2 YEAR);",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE2D5546D40>, <Whitespace ' ' at 0x7BE275DC8F40>, <Integer '1' at 0x7BE27D33D8A0>, <Punctuation ';' at 0x7BE274B462C0>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Conta le recensioni per ogni valutazione",
+          "ground_truth": "SELECT valutazione, COUNT(*) as numero_recensioni FROM recensioni GROUP BY valutazione ORDER BY valutazione;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE275AB6560>, <Whitespace ' ' at 0x7BE275AB7AC0>, <Integer '1' at 0x7BE275AB53C0>, <Punctuation ';' at 0x7BE275AB4340>]",
+          "semantic_similarity": 0.2857142857142857,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i clienti della Puglia che non hanno mai fatto ordini",
+          "ground_truth": "SELECT c.* FROM clienti c LEFT JOIN ordini o ON c.id_cliente = o.id_cliente WHERE c.regione = 'Puglia' AND o.id_cliente IS NULL;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE274C911E0>, <Whitespace ' ' at 0x7BE274F70400>, <Integer '1' at 0x7BE274F72B00>, <Punctuation ';' at 0x7BE274F72680>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i prodotti con prezzo tra 50 e 150 euro ordinati per categoria",
+          "ground_truth": "SELECT * FROM prodotti WHERE prezzo BETWEEN 50 AND 150 ORDER BY categoria, prezzo;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE264FC8400>, <Whitespace ' ' at 0x7BE264FC8FA0>, <Integer '1' at 0x7BE264FC8DC0>, <Punctuation ';' at 0x7BE264FC89A0>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Quali dipendenti sono stati assunti nel 2023?",
+          "ground_truth": "SELECT * FROM dipendenti WHERE YEAR(data_assunzione) = 2023;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE27E196BC0>, <Whitespace ' ' at 0x7BE265640460>, <Integer '1' at 0x7BE265641A20>, <Punctuation ';' at 0x7BE265640220>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra le promozioni attive con sconto percentuale > 15%",
+          "ground_truth": "SELECT * FROM promozioni WHERE stato = 'attiva' AND sconto_percentuale > 15 AND CURDATE() BETWEEN data_inizio AND data_fine;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE27DFEA4A0>, <Whitespace ' ' at 0x7BE265B3D600>, <Integer '1' at 0x7BE265B3F1C0>, <Punctuation ';' at 0x7BE265B3CE80>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i movimenti di magazzino per danneggiamento",
+          "ground_truth": "SELECT * FROM magazzino WHERE motivo = 'danneggiamento';",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE27CF40A00>, <Whitespace ' ' at 0x7BE265B3DA20>, <Integer '1' at 0x7BE265B3DAE0>, <Punctuation ';' at 0x7BE265B3DC00>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca i clienti con email aziendale (.com o .it) ordinati per città",
+          "ground_truth": "SELECT * FROM clienti WHERE (email LIKE '%.com' OR email LIKE '%.it') ORDER BY citta;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE265642E60>, <Whitespace ' ' at 0x7BE264FC8820>, <Integer '1' at 0x7BE265E118A0>, <Punctuation ';' at 0x7BE265E13580>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra il valore totale degli ordini per ogni metodo di pagamento",
+          "ground_truth": "SELECT metodo_pagamento, SUM(totale) as valore_totale FROM ordini GROUP BY metodo_pagamento ORDER BY valore_totale DESC;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE265E10DC0>, <Whitespace ' ' at 0x7BE265B3F340>, <Integer '1' at 0x7BE265641AE0>, <Punctuation ';' at 0x7BE266231A80>]",
+          "semantic_similarity": 0.2857142857142857,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i prodotti mai recensiti",
+          "ground_truth": "SELECT p.* FROM prodotti p LEFT JOIN recensioni r ON p.id_prodotto = r.id_prodotto WHERE r.id_prodotto IS NULL;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE265E13400>, <Whitespace ' ' at 0x7BE265E115A0>, <Integer '1' at 0x7BE265E10880>, <Punctuation ';' at 0x7BE265E13280>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Quali ordini hanno richiesto più di una settimana per la spedizione?",
+          "ground_truth": "SELECT * FROM ordini WHERE DATEDIFF(data_consegna, data_ordine) > 7 AND stato = 'consegnato';",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE266230D00>, <Whitespace ' ' at 0x7BE2662313C0>, <Integer '1' at 0x7BE266231300>, <Punctuation ';' at 0x7BE266232680>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i dipendenti senza dipendenti sotto di loro",
+          "ground_truth": "SELECT d1.* FROM dipendenti d1 LEFT JOIN dipendenti d2 ON d1.id_dipendente = d2.manager_id WHERE d2.manager_id IS NULL AND d1.stato = 'attivo';",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE266230640>, <Whitespace ' ' at 0x7BE2666C0E80>, <Integer '1' at 0x7BE2666C22C0>, <Punctuation ';' at 0x7BE2666C25C0>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova le fatture emesse nell'ultimo trimestre",
+          "ground_truth": "SELECT * FROM fatture WHERE data_emissione >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH);",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE2666C2380>, <Whitespace ' ' at 0x7BE2666C03A0>, <Integer '1' at 0x7BE2666C04C0>, <Punctuation ';' at 0x7BE2666C2500>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca i clienti che hanno fatto ordini sia a Milano che a Roma",
+          "ground_truth": "SELECT DISTINCT c.* FROM clienti c JOIN ordini o1 ON c.id_cliente = o1.id_cliente JOIN ordini o2 ON c.id_cliente = o2.id_cliente WHERE o1.citta_consegna = 'Milano' AND o2.citta_consegna = 'Roma';",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE2666C2440>, <Whitespace ' ' at 0x7BE265B3FD00>, <Integer '1' at 0x7BE266958B80>, <Punctuation ';' at 0x7BE266958460>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i prodotti con il margine più alto",
+          "ground_truth": "SELECT *, ((prezzo - costo) / costo * 100) as margine FROM prodotti WHERE costo > 0 ORDER BY margine DESC LIMIT 10;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE266958820>, <Whitespace ' ' at 0x7BE266DB3640>, <Integer '1' at 0x7BE266DB2E00>, <Punctuation ';' at 0x7BE266DB1BA0>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i fornitori con rating medio superiore a 4.5",
+          "ground_truth": "SELECT * FROM fornitori WHERE valutazione > 4.5;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE266958100>, <Whitespace ' ' at 0x7BE26695BA60>, <Integer '1' at 0x7BE266958A00>, <Punctuation ';' at 0x7BE266958A60>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Quali clienti hanno fatto ordini in tutti i mesi del 2024?",
+          "ground_truth": "SELECT c.nome, c.cognome FROM clienti c JOIN ordini o ON c.id_cliente = o.id_cliente WHERE YEAR(o.data_ordine) = 2024 GROUP BY c.id_cliente, c.nome, c.cognome HAVING COUNT(DISTINCT MONTH(o.data_ordine)) = 12;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE266DB2080>, <Whitespace ' ' at 0x7BE266DB11E0>, <Integer '1' at 0x7BE266DB26E0>, <Punctuation ';' at 0x7BE266DB1F60>]",
+          "semantic_similarity": 0.14285714285714285,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i dipendenti con lo stipendio più alto per dipartimento",
+          "ground_truth": "SELECT d1.* FROM dipendenti d1 WHERE d1.stipendio = (SELECT MAX(d2.stipendio) FROM dipendenti d2 WHERE d2.dipartimento = d1.dipartimento);",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE274988340>, <Whitespace ' ' at 0x7BE266FA0520>, <Integer '1' at 0x7BE266FA05E0>, <Punctuation ';' at 0x7BE266FA0760>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova gli ordini con almeno 5 prodotti diversi",
+          "ground_truth": "SELECT o.* FROM ordini o JOIN dettagli_ordine d ON o.id_ordine = d.id_ordine GROUP BY o.id_ordine HAVING COUNT(DISTINCT d.id_prodotto) >= 5;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE27498AE00>, <Whitespace ' ' at 0x7BE27498ACE0>, <Integer '1' at 0x7BE2749883A0>, <Punctuation ';' at 0x7BE274988160>]",
+          "semantic_similarity": 0.2857142857142857,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca i prodotti della categoria elettronica esauriti",
+          "ground_truth": "SELECT * FROM prodotti WHERE categoria = 'elettronica' AND (stato = 'esaurito' OR giacenza = 0);",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE27425C580>, <Whitespace ' ' at 0x7BE266FA1D80>, <Integer '1' at 0x7BE266FA0CA0>, <Punctuation ';' at 0x7BE266FA3BE0>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra le recensioni negative con commento lungo",
+          "ground_truth": "SELECT * FROM recensioni WHERE valutazione <= 2 AND LENGTH(commento) > 100;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE27486F5E0>, <Whitespace ' ' at 0x7BE27429AC20>, <Integer '1' at 0x7BE2742991E0>, <Punctuation ';' at 0x7BE274299A80>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i clienti che hanno fatto il primo ordine nell'ultimo mese",
+          "ground_truth": "SELECT c.* FROM clienti c JOIN ordini o ON c.id_cliente = o.id_cliente WHERE o.data_ordine >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND o.data_ordine = (SELECT MIN(o2.data_ordine) FROM ordini o2 WHERE o2.id_cliente = c.id_cliente);",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE27D9BE260>, <Whitespace ' ' at 0x7BE27D9BDF00>, <Integer '1' at 0x7BE27D9BC340>, <Punctuation ';' at 0x7BE27D9BC580>]",
+          "semantic_similarity": 0.2857142857142857,
+          "normalized_match": false
+        },
+        {
+          "question": "Quali sono i prodotti più costosi per ogni categoria?",
+          "ground_truth": "SELECT p1.* FROM prodotti p1 WHERE p1.prezzo = (SELECT MAX(p2.prezzo) FROM prodotti p2 WHERE p2.categoria = p1.categoria);",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE274679CC0>, <Whitespace ' ' at 0x7BE274678520>, <Integer '1' at 0x7BE274678A60>, <Punctuation ';' at 0x7BE274678400>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i dipendenti che lavorano nella stessa città dei clienti",
+          "ground_truth": "SELECT DISTINCT d.* FROM dipendenti d JOIN clienti c ON d.citta = c.citta;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE2D55A80A0>, <Whitespace ' ' at 0x7BE275BDE1A0>, <Integer '1' at 0x7BE275CCECE0>, <Punctuation ';' at 0x7BE275CCD060>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova le promozioni scadute negli ultimi 30 giorni",
+          "ground_truth": "SELECT * FROM promozioni WHERE data_fine BETWEEN DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND CURDATE();",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE274B46E00>, <Whitespace ' ' at 0x7BE274B462C0>, <Integer '1' at 0x7BE274B472E0>, <Punctuation ';' at 0x7BE27D6D3DC0>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca i clienti con più di 3 ordini annullati",
+          "ground_truth": "SELECT c.nome, c.cognome, COUNT(o.id_ordine) as ordini_annullati FROM clienti c JOIN ordini o ON c.id_cliente = o.id_cliente WHERE o.stato = 'annullato' GROUP BY c.id_cliente, c.nome, c.cognome HAVING COUNT(o.id_ordine) > 3;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE267B664A0>, <Whitespace ' ' at 0x7BE267B65720>, <Integer '1' at 0x7BE267B65480>, <Punctuation ';' at 0x7BE27471BCA0>]",
+          "semantic_similarity": 0.14285714285714285,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra il trend mensile delle vendite per la categoria sport",
+          "ground_truth": "SELECT MONTH(o.data_ordine) as mese, SUM(d.subtotale) as vendite FROM ordini o JOIN dettagli_ordine d ON o.id_ordine = d.id_ordine JOIN prodotti p ON d.id_prodotto = p.id_prodotto WHERE p.categoria = 'sport' AND YEAR(o.data_ordine) = YEAR(CURDATE()) GROUP BY MONTH(o.data_ordine) ORDER BY mese;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE2745447C0>, <Whitespace ' ' at 0x7BE274546020>, <Integer '1' at 0x7BE2745455A0>, <Punctuation ';' at 0x7BE27428C1C0>]",
+          "semantic_similarity": 0.0,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i fornitori che forniscono prodotti in più categorie",
+          "ground_truth": "SELECT fornitore, COUNT(DISTINCT categoria) as categorie FROM prodotti GROUP BY fornitore HAVING COUNT(DISTINCT categoria) > 1;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE274C90A00>, <Whitespace ' ' at 0x7BE275067460>, <Integer '1' at 0x7BE2750643A0>, <Punctuation ';' at 0x7BE275065A80>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Quali ordini hanno un valore unitario medio superiore a 100 euro?",
+          "ground_truth": "SELECT o.*, AVG(d.prezzo_unitario) as prezzo_medio FROM ordini o JOIN dettagli_ordine d ON o.id_ordine = d.id_ordine GROUP BY o.id_ordine HAVING AVG(d.prezzo_unitario) > 100;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE267442320>, <Whitespace ' ' at 0x7BE267C4F5E0>, <Integer '1' at 0x7BE27428C5E0>, <Punctuation ';' at 0x7BE27428F340>]",
+          "semantic_similarity": 0.2857142857142857,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i clienti che hanno cambiato regione di consegna",
+          "ground_truth": "SELECT DISTINCT c.* FROM clienti c JOIN ordini o ON c.id_cliente = o.id_cliente WHERE c.regione != o.regione_consegna;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE27428CE80>, <Whitespace ' ' at 0x7BE27428FA60>, <Integer '1' at 0x7BE2746A65C0>, <Punctuation ';' at 0x7BE2746A4040>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i dipendenti con anzianità aziendale superiore a 5 anni",
+          "ground_truth": "SELECT *, DATEDIFF(CURDATE(), data_assunzione) / 365 as anni_servizio FROM dipendenti WHERE DATEDIFF(CURDATE(), data_assunzione) / 365 > 5;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE275DC8E20>, <Whitespace ' ' at 0x7BE275DC8B80>, <Integer '1' at 0x7BE275DC9780>, <Punctuation ';' at 0x7BE275DC87C0>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca le fatture con IVA calcolata incorrettamente (IVA ≠ 22% dell'imponibile)",
+          "ground_truth": "SELECT *, (importo_totale - iva) as imponibile, ((importo_totale - iva) * 0.22) as iva_corretta FROM fatture WHERE ABS(iva - ((importo_totale - iva) * 0.22)) > 0.01;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE22F8504C0>, <Whitespace ' ' at 0x7BE22F852200>, <Integer '1' at 0x7BE22F8501C0>, <Punctuation ';' at 0x7BE22F851240>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i prodotti con giacenza critica (< 5) ordinati per categoria",
+          "ground_truth": "SELECT * FROM prodotti WHERE giacenza < 5 AND stato = 'disponibile' ORDER BY categoria, giacenza;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE22FF64940>, <Whitespace ' ' at 0x7BE22FF64B20>, <Integer '1' at 0x7BE22FF64160>, <Punctuation ';' at 0x7BE22FF66620>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i clienti VIP (spesa totale > 10000 euro)",
+          "ground_truth": "SELECT c.nome, c.cognome, SUM(o.totale) as spesa_totale FROM clienti c JOIN ordini o ON c.id_cliente = o.id_cliente GROUP BY c.id_cliente, c.nome, c.cognome HAVING SUM(o.totale) > 10000 ORDER BY spesa_totale DESC;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE22FB4DB40>, <Whitespace ' ' at 0x7BE22FB4C9A0>, <Integer '1' at 0x7BE22FB4CB20>, <Punctuation ';' at 0x7BE22FB4D360>]",
+          "semantic_similarity": 0.14285714285714285,
+          "normalized_match": false
+        },
+        {
+          "question": "Quali ordini hanno prodotti di categorie diverse?",
+          "ground_truth": "SELECT o.* FROM ordini o JOIN dettagli_ordine d ON o.id_ordine = d.id_ordine JOIN prodotti p ON d.id_prodotto = p.id_prodotto GROUP BY o.id_ordine HAVING COUNT(DISTINCT p.categoria) > 1;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE22FF671C0>, <Whitespace ' ' at 0x7BE22FF650C0>, <Integer '1' at 0x7BE22FF66DA0>, <Punctuation ';' at 0x7BE22FF65180>]",
+          "semantic_similarity": 0.2857142857142857,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra la distribuzione geografica dei clienti per regione",
+          "ground_truth": "SELECT regione, COUNT(*) as numero_clienti FROM clienti GROUP BY regione ORDER BY numero_clienti DESC;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE22FB4D2A0>, <Whitespace ' ' at 0x7BE22FB4EBC0>, <Integer '1' at 0x7BE22FB4E260>, <Punctuation ';' at 0x7BE22F853F40>]",
+          "semantic_similarity": 0.2857142857142857,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i prodotti con recensioni contrastanti (sia 1 che 5 stelle)",
+          "ground_truth": "SELECT DISTINCT p.* FROM prodotti p JOIN recensioni r1 ON p.id_prodotto = r1.id_prodotto JOIN recensioni r2 ON p.id_prodotto = r2.id_prodotto WHERE r1.valutazione = 1 AND r2.valutazione = 5;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE2663BCEE0>, <Whitespace ' ' at 0x7BE2663BE080>, <Integer '1' at 0x7BE2663BE380>, <Punctuation ';' at 0x7BE2663BF820>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca i dipendenti che guadagnano sopra la media del loro dipartimento",
+          "ground_truth": "SELECT d1.* FROM dipendenti d1 WHERE d1.stipendio > (SELECT AVG(d2.stipendio) FROM dipendenti d2 WHERE d2.dipartimento = d1.dipartimento);",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE2663BC1C0>, <Whitespace ' ' at 0x7BE2663BDB40>, <Integer '1' at 0x7BE2663BDE40>, <Punctuation ';' at 0x7BE2663BDF00>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra gli ordini con tempo di consegna record (≤ 2 giorni)",
+          "ground_truth": "SELECT * FROM ordini WHERE DATEDIFF(data_consegna, data_ordine) <= 2 AND stato = 'consegnato';",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE22FF64220>, <Whitespace ' ' at 0x7BE2652123E0>, <Integer '1' at 0x7BE2652130A0>, <Punctuation ';' at 0x7BE265212620>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova i fornitori che non hanno prodotti attivi nel catalogo",
+          "ground_truth": "SELECT DISTINCT f.* FROM fornitori f LEFT JOIN prodotti p ON f.nome_azienda = p.fornitore WHERE p.fornitore IS NULL OR p.stato != 'disponibile';",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE265211120>, <Whitespace ' ' at 0x7BE26460B460>, <Integer '1' at 0x7BE26460A980>, <Punctuation ';' at 0x7BE26460AC20>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        },
+        {
+          "question": "Quali clienti hanno fatto ordini consecutivi nell'ultima settimana?",
+          "ground_truth": "SELECT c.nome, c.cognome, COUNT(o.id_ordine) as ordini_settimana FROM clienti c JOIN ordini o ON c.id_cliente = o.id_cliente WHERE o.data_ordine >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) GROUP BY c.id_cliente, c.nome, c.cognome HAVING COUNT(o.id_ordine) > 1;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE2652104C0>, <Whitespace ' ' at 0x7BE265210E80>, <Integer '1' at 0x7BE265212980>, <Punctuation ';' at 0x7BE2652139A0>]",
+          "semantic_similarity": 0.14285714285714285,
+          "normalized_match": false
+        },
+        {
+          "question": "Mostra i prodotti con il rapporto qualità-prezzo migliore",
+          "ground_truth": "SELECT p.*, AVG(r.valutazione) as valutazione_media, (AVG(r.valutazione) / p.prezzo * 100) as rapporto_qp FROM prodotti p JOIN recensioni r ON p.id_prodotto = r.id_prodotto GROUP BY p.id_prodotto ORDER BY rapporto_qp DESC LIMIT 10;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE2646080A0>, <Whitespace ' ' at 0x7BE264608E80>, <Integer '1' at 0x7BE264609F60>, <Punctuation ';' at 0x7BE264609CC0>]",
+          "semantic_similarity": 0.14285714285714285,
+          "normalized_match": false
+        },
+        {
+          "question": "Trova le fatture emesse e pagate nello stesso giorno",
+          "ground_truth": "SELECT * FROM fatture WHERE data_emissione = data_pagamento;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE274E08EE0>, <Whitespace ' ' at 0x7BE266B7FEE0>, <Integer '1' at 0x7BE266B7E500>, <Punctuation ';' at 0x7BE266B7CBE0>]",
+          "semantic_similarity": 0.5714285714285714,
+          "normalized_match": false
+        },
+        {
+          "question": "Elenca i movimenti di magazzino anomali (grandi quantità)",
+          "ground_truth": "SELECT * FROM magazzino WHERE ABS(quantita) > 100 ORDER BY data_movimento DESC;",
+          "prediction": "SELECT 1;",
+          "exact_match": false,
+          "syntax_valid": "[<DML 'SELECT' at 0x7BE274E0AF80>, <Whitespace ' ' at 0x7BE274E0B640>, <Integer '1' at 0x7BE274E0AC20>, <Punctuation ';' at 0x7BE274E0ABC0>]",
+          "semantic_similarity": 0.42857142857142855,
+          "normalized_match": false
+        }
+      ]
+    }
+  },
+  "winner": {
+    "model": "codet5",
+    "margin": 0.15172735760971057,
+    "metric_used": "semantic_similarity_avg"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "model_name": "seeklhy/codes-1b",
+  "training_time_seconds": 27216.38797545433,
+  "total_time_seconds": 27226.338049411774,
+  "training_examples": 960,
+  "validation_examples": 60,
+  "epochs": 8,
+  "batch_size": 8,
+  "learning_rate": 0.0005,
+  "lora_r": 32,
+  "lora_alpha": 64,
+  "final_eval_loss": "unknown",
+  "quantization": "4-bit",
+  "improvements": [
+    "8x larger dataset (960 vs 120 examples)",
+    "Increased learning rate (5e-4 vs 2e-4)",
+    "Larger LoRA parameters (r=32 vs 16)",
+    "More epochs (8 vs 5)",
+    "Larger batch size (8 vs 4)",
+    "Cosine learning rate scheduler",
+    "Extended early stopping patience"
+  ],
+  "intent_distribution": {
+    "shipping_info": 80,
+    "general_inquiry": 80,
+    "product_info": 80,
+    "promotions_discounts": 80,
+    "product_availability": 80,
+    "account_management": 80,
+    "order_cancellation": 80,
+    "technical_support": 80,
+    "payment_issues": 80,
+    "account_access": 80,
+    "return_refund": 80,
+    "order_tracking": 80
+  },
+  "timestamp": "2025-08-21T18:46:32.708178"
+}

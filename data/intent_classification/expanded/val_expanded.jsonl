@@ -1,0 +1,60 @@
+{"text": "Reset password non arriva", "intent": "account_access"}
+{"text": "Link di verifica scaduto", "intent": "account_access"}
+{"text": "Account temporaneamente sospeso", "intent": "account_access"}
+{"text": "Codice di verifica non valido", "intent": "account_access"}
+{"text": "Autenticazione a due fattori bloccata", "intent": "account_access"}
+{"text": "Modificare data di nascita", "intent": "account_management"}
+{"text": "Aggiornare preferenze di marketing", "intent": "account_management"}
+{"text": "Come collego social media?", "intent": "account_management"}
+{"text": "Modificare metodo di pagamento predefinito", "intent": "account_management"}
+{"text": "Cambiare fuso orario account", "intent": "account_management"}
+{"text": "Informazioni sul servizio", "intent": "general_inquiry"}
+{"text": "Come posso fare per...", "intent": "general_inquiry"}
+{"text": "Vorrei chiedere", "intent": "general_inquiry"}
+{"text": "Ho bisogno di chiarimenti", "intent": "general_inquiry"}
+{"text": "Potete dirmi se...", "intent": "general_inquiry"}
+{"text": "Non spedite il mio ordine", "intent": "order_cancellation"}
+{"text": "Voglio revocare l'ordine", "intent": "order_cancellation"}
+{"text": "Cancellazione ordine urgente", "intent": "order_cancellation"}
+{"text": "Stop alla spedizione", "intent": "order_cancellation"}
+{"text": "Rimuovere ordine dal sistema", "intent": "order_cancellation"}
+{"text": "Informazioni sul tracking", "intent": "order_tracking"}
+{"text": "Il pacco è in viaggio?", "intent": "order_tracking"}
+{"text": "Previsioni di consegna", "intent": "order_tracking"}
+{"text": "Dove si trova attualmente?", "intent": "order_tracking"}
+{"text": "Aggiornamento sulla spedizione", "intent": "order_tracking"}
+{"text": "Errore nel processo di pagamento", "intent": "payment_issues"}
+{"text": "Transazione bloccata", "intent": "payment_issues"}
+{"text": "Problema con bonifico", "intent": "payment_issues"}
+{"text": "Addebito duplicato", "intent": "payment_issues"}
+{"text": "Pagamento non riconosciuto", "intent": "payment_issues"}
+{"text": "È disponibile per la spedizione?", "intent": "product_availability"}
+{"text": "Quantità ancora disponibili", "intent": "product_availability"}
+{"text": "Prodotto in arrivo?", "intent": "product_availability"}
+{"text": "Disponibilità immediata", "intent": "product_availability"}
+{"text": "Rifornimento magazzino quando?", "intent": "product_availability"}
+{"text": "Caratteristiche principali", "intent": "product_info"}
+{"text": "Cosa include la confezione?", "intent": "product_info"}
+{"text": "Differenze tra i modelli", "intent": "product_info"}
+{"text": "Requisiti di sistema", "intent": "product_info"}
+{"text": "Informazioni nutrizionali", "intent": "product_info"}
+{"text": "Cashback disponibile", "intent": "promotions_discounts"}
+{"text": "Sconti studenti", "intent": "promotions_discounts"}
+{"text": "Offerte fedeltà", "intent": "promotions_discounts"}
+{"text": "Codici promozionali", "intent": "promotions_discounts"}
+{"text": "Sconti compleanno", "intent": "promotions_discounts"}
+{"text": "Rimborso completo", "intent": "return_refund"}
+{"text": "Reso entro 30 giorni", "intent": "return_refund"}
+{"text": "Prodotto arrivato danneggiato", "intent": "return_refund"}
+{"text": "Diritto di recesso", "intent": "return_refund"}
+{"text": "Procedura per il reso", "intent": "return_refund"}
+{"text": "Spedizione standard", "intent": "shipping_info"}
+{"text": "Modalità di consegna", "intent": "shipping_info"}
+{"text": "Spedizione gratuita sopra i...", "intent": "shipping_info"}
+{"text": "Zone di consegna", "intent": "shipping_info"}
+{"text": "Packaging e spedizione", "intent": "shipping_info"}
+{"text": "Bug nell'applicazione", "intent": "technical_support"}
+{"text": "Problemi di performance", "intent": "technical_support"}
+{"text": "Non funziona il carrello", "intent": "technical_support"}
+{"text": "Errore nella ricerca", "intent": "technical_support"}
+{"text": "Problema con il checkout", "intent": "technical_support"}
