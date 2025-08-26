@@ -99,7 +99,7 @@ def format_example(example):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model_id", type=str, default="unsloth/gemma-3-1b-it-bnb-4bit")
+    parser.add_argument("--model_id", type=str, default="google/gemma-3-1b-it")
     parser.add_argument("--train_path", type=str, default="data/ner/train.jsonl")
     parser.add_argument("--val_path", type=str, default="data/ner/val.jsonl")
     parser.add_argument("--output_dir", type=str, default="outputs/gemma3-1b-ner")

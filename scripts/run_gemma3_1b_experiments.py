@@ -53,7 +53,7 @@ class Gemma3ExperimentRunner:
     def train_gemma3_1b_ner(self):
         """Train Gemma3 1B on NER task"""
         command = """poetry run python scripts/training/train_gemma3_1b_ner.py \
-            --model_id google/gemma-3-1b \
+            --model_id google/gemma-3-1b-it \
             --train_path data/ner/train.jsonl \
             --val_path data/ner/val.jsonl \
             --output_dir outputs/gemma3-1b-ner-experiment \
@@ -76,7 +76,7 @@ class Gemma3ExperimentRunner:
     def train_gemma3_1b_hashtag(self):
         """Train Gemma3 1B on hashtag generation"""
         command = """poetry run python scripts/training/train_gemma3_1b_hashtag.py \
-            --model_id google/gemma-3-1b \
+            --model_id google/gemma-3-1b-it \
             --train_path data/hashtag_generation/train.jsonl \
             --val_path data/hashtag_generation/val.jsonl \
             --output_dir outputs/gemma3-1b-hashtag-experiment \

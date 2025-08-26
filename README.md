@@ -1,8 +1,17 @@
-# 🎯 Confronto Multi-Modello per NLP Italiano
+# 🎯 Gemma Models Training & Comparison Framework
 
 ## Panoramica del Progetto
 
-Studio comparativo completo tra **Gemma3-270M** e **Codes-1B** per multiple task di NLP italiano, con focus su ottimizzazione per **GPU 4GB** e valutazioni sistematiche.
+Framework completo per il fine-tuning e confronto di modelli **Gemma3 (270M & 1B)** vs **CodeS-1B** su multiple task NLP. Include ottimizzazioni per GPU consumer (4-8GB VRAM) con quantizzazione 4-bit e supporto LoRA.
+
+## 🆕 Nuove Funzionalità - Gemma3 1B
+
+### Framework di Training Gemma3 1B
+- **`google/gemma-3-1b-it`**: Modello instruction-tuned da 1B parametri
+- **32k context window**: 4x superiore a modelli precedenti  
+- **140+ lingue**: Supporto multilingue esteso
+- **4-bit quantization**: Training efficiente su 8GB VRAM
+- **LoRA fine-tuning**: Adattamento rapido e efficiente
 
 ## 🏆 Risultati Principali
 
@@ -68,18 +77,40 @@ poetry run python scripts/training/train_gemma3_ner.py
 poetry run python scripts/training/train_codes1b_text2sql.py
 ```
 
-### Evaluation
+### Gemma3 1B Training & Comparison
 ```bash
-# Valutazione completa tutti i modelli
+# Training completo NER + Hashtag + Confronto
+poetry run python scripts/run_gemma3_1b_experiments.py --step all
+
+# Solo training NER
+poetry run python scripts/run_gemma3_1b_experiments.py --step ner
+
+# Confronto Gemma3 1B vs CodeS-1B
+poetry run python scripts/evaluation/gemma3_vs_codes1b_comparison.py
+```
+
+### Traditional Evaluation
+```bash
+# Valutazione completa tutti i modelli (270M focus)
 poetry run python scripts/evaluation/evaluate_all.py
 ```
 
 ## 📊 Conclusioni
 
-1. **Codes-1B è un powerhouse multi-dominio**: 62.5% Text-to-SQL + 100% Intent Classification
-2. **Gemma3-270M eccelle su NER** (98.3% F1)
-3. **Quantizzazione efficace** per GPU 4GB
-4. **Training optimization cruciale**: da 25% → 100% accuracy con giusti parametri
-5. **Breakthrough**: I modelli possono eccellere oltre la specializzazione originale
+### Gemma3 270M vs CodeS-1B (Risultati Consolidati)
+1. **CodeS-1B è powerhouse multi-dominio**: 62.5% Text-to-SQL + 100% Intent Classification
+2. **Gemma3-270M eccelle su NER linguistico** (98.3% F1)
+3. **Quantizzazione efficace** per GPU 4GB-8GB
+4. **Training optimization cruciale**: da 25% → 100% accuracy
 
-Per dettagli completi: [docs/](docs/)
+### Gemma3 1B vs CodeS-1B (Predizioni)
+1. **NER**: Gemma3 1B winner (+32k context, multilingue)
+2. **Hashtag**: Gemma3 1B winner (creatività + comprensione)
+3. **SQL**: CodeS-1B winner (specializzazione code)
+4. **Intent**: CodeS-1B winner (classification precision)
+
+## 📚 Documentazione
+
+- [Gemma3 1B Training Guide](docs/gemma3_1b_training_guide.md)
+- [Model Comparison Framework](docs/model_comparison_framework.md)
+- [Documentazione completa](docs/)
