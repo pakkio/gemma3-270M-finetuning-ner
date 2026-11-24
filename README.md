@@ -60,11 +60,25 @@ Framework completo per il fine-tuning e confronto di modelli **Gemma3 (270M & 1B
 │   ├── training/         # Training dei modelli
 │   ├── evaluation/       # Valutazione e metriche
 │   └── data_preparation/ # Preparazione dataset
-├── models/               # Modelli finali
-│   ├── production/       # Modelli migliori per produzione
-│   └── experiments/      # Esperimenti
+├── models/               # (ignorata da git) adapter e pesi finali: vedi "Pesi del modello"
+├── outputs/              # (ignorata da git) checkpoint di addestramento
 └── results/              # Risultati e metriche
 ```
+
+## 💾 Pesi del modello (fuori da git)
+
+`outputs/` (checkpoint) e `models/` (adapter) non sono più nel repository: pesavano ~1 GB nel working tree, in gran parte 26 copie dello stesso `tokenizer.json`, e restavano per sempre nella storia. Git li ignora; i pesi stanno su un repo del Hugging Face Hub, **negli stessi percorsi relativi** che gli script già usano, quindi dopo un `pull` gli script esistenti funzionano senza modifiche.
+
+```bash
+export GEMMA_NER_WEIGHTS_REPO=utente/gemma3-ner-weights   # repo del Hub (oppure --repo)
+export HF_TOKEN=...                                       # per push e repo privati (o `huggingface-cli login`)
+
+python scripts/weights_hub.py push outputs/gemma3-robust-training    # dalla macchina che ha i pesi
+python scripts/weights_hub.py pull outputs/gemma3-robust-training    # su un'altra macchina
+python scripts/weights_hub.py pull --all
+```
+
+Dal codice, scaricando solo se manca: `from scripts.weights_hub import ensure; ensure("outputs/gemma3-robust-training")`. `push` crea il repo privato e non carica lo stato di ripresa dell'addestramento (`optimizer.pt`, ecc.) se non lo chiedi (`--with-training-state`). Il modello base (`google/gemma-3-270m`) e i suoi tokenizer si scaricano già dal Hub con `from_pretrained`.
 
 ## 🚀 Quick Start
 

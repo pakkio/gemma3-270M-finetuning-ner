@@ -28,8 +28,13 @@ ENV/
 env/
 .env
 
-# Model files and training outputs
+# Model files and training outputs (weights live on the Hub: scripts/weights_hub.py)
 outputs/
+/models/
+
+# AI coding tools' local state (chat history databases)
+.crush/
+.opencode/
 models/*.safetensors
 models/*.bin
 models/*.pt
