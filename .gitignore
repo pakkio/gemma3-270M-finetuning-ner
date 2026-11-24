@@ -28,8 +28,9 @@ ENV/
 env/
 .env
 
-# Model files and training outputs
+# Model files and training outputs (weights live on the Hub: scripts/weights_hub.py)
 outputs/
+/models/
 models/*.safetensors
 models/*.bin
 models/*.pt
